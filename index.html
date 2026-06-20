@@ -2877,6 +2877,10 @@
       <span class="dim">lagu langsung play — tanpa iklan ✨</span>
     </div>
     <div class="toggle-row">
+      <button class="music-toggle" id="fsToggle" aria-label="Toggle Fullscreen" style="margin-right: 4px;">
+        <svg id="fsIconExpand" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+        <svg id="fsIconCompress" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>
+      </button>
       <button class="music-toggle" id="musicToggle" aria-label="Toggle music ad-skipper">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
           <path d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zm12-2a3 3 0 11-6 0 3 3 0 016 0z" fill="none"
@@ -3277,8 +3281,41 @@
       const audio = document.getElementById('audioPlayer');
 
       // Toggle: tampilkan/sembunyikan player widget; audio terus play di background
-      toggle.addEventListener('click', () => player.classList.toggle('open'));
-      close.addEventListener('click', () => player.classList.remove('open'));
+      toggle.addEventListener('click', () => {
+        player.classList.toggle('open');
+      });
+
+      close.addEventListener('click', () => {
+        player.classList.remove('open');
+      });
+
+      // Fullscreen toggle
+      const fsToggle = document.getElementById('fsToggle');
+      const fsIconExpand = document.getElementById('fsIconExpand');
+      const fsIconCompress = document.getElementById('fsIconCompress');
+
+      if (fsToggle) {
+        fsToggle.addEventListener('click', () => {
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+              console.log(`Error attempting to enable fullscreen: ${err.message}`);
+            });
+          } else {
+            document.exitFullscreen();
+          }
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+          if (document.fullscreenElement) {
+            fsIconExpand.style.display = 'none';
+            fsIconCompress.style.display = 'block';
+          } else {
+            fsIconExpand.style.display = 'block';
+            fsIconCompress.style.display = 'none';
+          }
+        });
+      }
+
 
       // Sinkronkan animasi EQ dengan state play/pause audio
       if (audio) {
