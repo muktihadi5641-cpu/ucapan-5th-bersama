@@ -36,7 +36,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Italiana&family=Petit+Formal+Script&family=Inter:wght@300;400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Italiana&family=Petit+Formal+Script&display=swap"
     rel="stylesheet">
 
   <style>
@@ -69,7 +69,7 @@
       --serif: "Cormorant Garamond", "Times New Roman", serif;
       --display: "Italiana", "Cormorant Garamond", serif;
       --script: "Petit Formal Script", "Cormorant Garamond", cursive;
-      --sans: "Inter", system-ui, -apple-system, sans-serif;
+      --sans: "Cormorant Garamond", "Times New Roman", serif;
 
       --shadow-card: 0 30px 80px -30px rgba(0, 0, 0, .7),
         0 0 0 1px var(--card-bd) inset;
@@ -94,12 +94,15 @@
 
     body {
       font-family: var(--sans);
+      font-weight: 400;
+      letter-spacing: .012em;
       color: var(--ink);
       background: var(--bg-0);
       min-height: 100vh;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
+      font-feature-settings: "liga" 1, "kern" 1;
     }
 
     img {
@@ -1784,7 +1787,7 @@
       border-radius: 14px;
       background: linear-gradient(180deg, #2a2128, #121212);
       box-shadow: 0 22px 50px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255, 255, 255, .04) inset;
-      font-family: "Inter", "Segoe UI", sans-serif;
+      font-family: var(--serif);
       color: var(--spt-text);
       /* iframe must stay in the DOM at all times so audio keeps playing
      when the widget is "closed" — use visibility/opacity, NOT display. */
@@ -1965,7 +1968,7 @@
       display: none;
       margin-top: 8px;
       padding: 6px 8px;
-      font-family: "Inter", "Segoe UI", sans-serif;
+      font-family: var(--serif);
       font-size: 11px;
       letter-spacing: .04em;
       color: #1DB954;
