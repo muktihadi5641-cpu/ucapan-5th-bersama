@@ -257,10 +257,12 @@
     }
 
     @keyframes drift-up {
-      0%   { transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg));      opacity: 0; }
+      /* translateX(-50%) -> CSS `left` jadi posisi center frame (bukan tepi kiri)
+         supaya frame di lane kanan tidak ter-clip lebih banyak dari yang kiri */
+      0%   { transform: translateX(-50%) translateY(0)     rotate(var(--rot, 0deg)); opacity: 0; }
       8%   { opacity: var(--peak, .22); }
       88%  { opacity: var(--peak, .22); }
-      100% { transform: translate3d(0, -170vh, 0) rotate(var(--rot, 0deg)); opacity: 0; }
+      100% { transform: translateX(-50%) translateY(-170vh) rotate(var(--rot, 0deg)); opacity: 0; }
     }
 
     @media (max-width: 640px) {
@@ -2196,14 +2198,14 @@
 
     .mem-dec-1 {
       top: 5%;
-      right: -60px;
+      right: -30px;
       width: 250px;
       opacity: 0.6;
     }
 
     .mem-dec-2 {
       bottom: 10%;
-      left: -60px;
+      left: -30px;
       width: 280px;
       opacity: 0.8;
       transform: rotate(-15deg);
