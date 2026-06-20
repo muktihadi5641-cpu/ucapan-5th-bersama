@@ -918,7 +918,46 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 }
 .player .close:hover{color:#fff;background:rgba(255,255,255,.08)}
 
-@media (max-width:520px){.player{width:240px;left:12px;bottom:12px}}
+/* visible YouTube iframe inside the player widget */
+#ytPlayerWrap{
+  margin-top:12px;
+  border-radius:8px;
+  overflow:hidden;
+  background:#000;
+  position:relative;
+}
+#ytPlayerWrap iframe,
+#ytPlayerWrap > div{
+  display:block;
+  width:100% !important;
+  border:0;
+}
+.yt-hint{
+  display:none;
+  margin-top:8px;
+  padding:6px 8px;
+  font-family:"Inter","Segoe UI",sans-serif;
+  font-size:11px;
+  letter-spacing:.04em;
+  color:#1DB954;
+  text-align:center;
+  line-height:1.3;
+}
+.yt-hint.show{display:flex;justify-content:center;align-items:center;gap:6px}
+.yt-hint .arrow{
+  display:inline-block;font-size:13px;
+  animation:hintBob 1.4s ease-in-out infinite;
+}
+@keyframes hintBob{
+  0%,100%{transform:translateY(0);opacity:.55}
+  50%   {transform:translateY(-3px);opacity:1}
+}
+
+/* widen the player so the YouTube iframe fits cleanly */
+.player{width:320px}
+@media (max-width:520px){
+  .player{width:280px;left:12px;bottom:12px}
+}
 
 /* =================================================
    14.5  FLOATING FLOWER DECORATIONS
@@ -1590,9 +1629,13 @@ h1,h2,h3{font-weight:400;line-height:1.1}
     <div class="artist" id="playerArtist">Nadin Amizah</div>
   </div>
 
-  <!-- hidden YouTube player -->
-  <div id="ytPlayerWrap" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;">
+  <!-- YouTube player: visible & tappable so mobile users can hit ▶ if autoplay is blocked -->
+  <div id="ytPlayerWrap">
     <div id="ytPlayer"></div>
+    <div class="yt-hint" id="ytHint" aria-hidden="true">
+      <span class="arrow">↑</span>
+      <span>tekan tombol play kalau lagu belum jalan</span>
+    </div>
   </div>
 </div>
 
@@ -1688,14 +1731,18 @@ let ytReady  = false;
   // Called by YouTube API when ready
   window.onYouTubeIframeAPIReady = function(){
     ytPlayer = new YT.Player('ytPlayer', {
-      height: '1',
-      width: '1',
+      height: '152',
+      width: '270',
       playerVars: {
-        autoplay: 0,
-        controls: 0,
+        autoplay: 1,           // muted autoplay is allowed by browsers
+        mute: 1,               // start muted, we'll unmute on user tap
+        controls: 1,           // shows YT controls so user can hit ▶ on mobile if blocked
+        playsinline: 1,        // iOS: play inline instead of full-screen takeover
         disablekb: 1,
         fs: 0,
         modestbranding: 1,
+        rel: 0,
+        iv_load_policy: 3,     // hide YT video annotations
         origin: window.location.origin
       },
       events: {
@@ -1728,11 +1775,27 @@ let ytReady  = false;
   function playSong(ytid, startSec){
     if(!ytPlayer || !ytReady){ pendingPlay = {ytid, startSec}; return; }
     currentStartSec = startSec || 0;
-    ytPlayer.loadVideoById({ videoId: ytid, startSeconds: currentStartSec });
-    ytPlayer.unMute();
-    ytPlayer.setVolume(100);
+
+    // Open the widget so iframe is visible BEFORE loading — gives mobile
+    // browsers a place to render the tap target if autoplay is blocked.
     document.getElementById('musicToggle').classList.add('playing');
     document.getElementById('player').classList.add('open');
+    document.getElementById('ytHint').classList.add('show');
+
+    // Step 1: load video muted (browsers allow muted autoplay on any device)
+    ytPlayer.loadVideoById({ videoId: ytid, startSeconds: currentStartSec });
+
+    // Step 2: as soon as playback actually starts, attempt to unmute.
+    //         If browser refuses (iOS), iframe is visible — user taps ▶/🔊.
+    const tryUnmute = ()=>{
+      try{
+        ytPlayer.unMute();
+        ytPlayer.setVolume(100);
+      }catch(_){}
+    };
+    // give the loader a moment to enter PLAYING state, then unmute
+    setTimeout(tryUnmute, 700);
+    setTimeout(tryUnmute, 1600);   // retry once more, just in case
   }
 
   /* ---------- start the chosen song (now via YouTube) ---------- */
