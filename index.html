@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="viewport" content="width=1200" />
   <title>Sayangkuu</title>
   <meta name="description" content="Sayangkuu" />
 
@@ -2225,52 +2225,6 @@
         transform: none
       }
     }
-    .device-selector {
-      margin-top: 24px;
-      text-align: center;
-      animation: pulseHint 2.4s ease-in-out infinite;
-    }
-    .device-selector p {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.6);
-      margin-bottom: 12px;
-      font-family: var(--sans);
-      letter-spacing: .02em;
-    }
-    .device-btns {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-    }
-    .device-btns button {
-      background: rgba(26, 6, 14, 0.6);
-      border: 1px solid var(--card-bd);
-      color: var(--fg);
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-family: var(--sans);
-      font-size: 14px;
-      cursor: pointer;
-      transition: var(--trans);
-      backdrop-filter: blur(8px);
-    }
-    .device-btns button.active {
-      background: var(--rose);
-      border-color: var(--rose-glow);
-      box-shadow: 0 0 12px rgba(232, 122, 150, 0.3);
-    }
-
-
-    @media (max-width:520px) {
-      .polaroids {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
-      .grid {
-        gap: 12px;
-      }
-    }
-
   </style>
 </head>
 
@@ -2295,13 +2249,7 @@
         <img src="ikon.webp" alt="" draggable="false">
       </button>
       <div class="gift-hint">ketuk bunganya 🌸</div>
-            <div class="device-selector">
-        <p>Pilih mode tampilan:</p>
-        <div class="device-btns">
-          <button id="btnDesktopMode" type="button">💻 Laptop</button>
-          <button id="btnMobileMode" type="button" class="active">📱 HP</button>
-        </div>
-      </div>
+      
     </div>
 
     <div class="pin-wrap" id="pinWrap" aria-hidden="true">
@@ -3267,24 +3215,6 @@
           document.body.style.overflow = '';
           revealScan();
         }, 1500);
-      }
-
-      /* ---------- Device Mode Selection ---------- */
-      const btnDesktopMode = document.getElementById('btnDesktopMode');
-      const btnMobileMode = document.getElementById('btnMobileMode');
-      const viewportMeta = document.querySelector('meta[name="viewport"]');
-
-      if (btnDesktopMode && btnMobileMode && viewportMeta) {
-        btnDesktopMode.addEventListener('click', () => {
-          viewportMeta.setAttribute('content', 'width=1200');
-          btnDesktopMode.classList.add('active');
-          btnMobileMode.classList.remove('active');
-        });
-        btnMobileMode.addEventListener('click', () => {
-          viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1,viewport-fit=cover');
-          btnMobileMode.classList.add('active');
-          btnDesktopMode.classList.remove('active');
-        });
       }
 
       /* ---------- hide the note on first toggle click ---------- */
