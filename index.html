@@ -877,7 +877,7 @@ h1,h2,h3{font-weight:400;line-height:1.1}
    14.  MUSIC WIDGET
    ================================================= */
 .music-toggle-wrap{
-  position:fixed;right:18px;bottom:18px;z-index:60;   /* above #intro (50) so it shows during song-picker */
+  position:fixed;right:18px;bottom:18px;z-index:100;  /* way above everything so it's never blocked */
   display:flex;flex-direction:column;align-items:flex-end;gap:10px;
 }
 .toggle-row{
@@ -919,11 +919,10 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* AD STATES (controlled by JS ad-watcher) */
-/* dim + unclickable while the YouTube ad is in its 5s "skip locked" phase */
+/* dim during the 5s "skip locked" phase but STILL clickable so user can pop
+   the player even before Skip Ad appears */
 .music-toggle.ad-locked{
-  opacity:.32;
-  cursor:not-allowed;
-  pointer-events:none;
+  opacity:.45;
   background:rgba(26,6,14,.55);
 }
 .music-toggle.ad-locked::after{
@@ -1152,6 +1151,26 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 .fd-intro-r  { top:-4vh;   right:-4vw;  width:min(260px,26vw); opacity:0.8;  transform:rotate(12deg); z-index:0; }
 .fd-intro-l  { bottom:-5vh; left:-5vw;  width:min(280px,28vw); opacity:0.8;  transform:rotate(-18deg); z-index:0; }
 
+/* The two flower decorations inside #intro: bottom-left + top-right */
+.intro-dec-1{
+  bottom:6vh; left:-2vw;
+  width:min(280px, 28vw);
+  opacity:.92;
+  transform:rotate(-12deg);
+  z-index:1;
+}
+.intro-dec-2{
+  top:6vh; right:-2vw;
+  width:min(260px, 26vw);
+  opacity:.9;
+  transform:rotate(15deg);
+  z-index:1;
+}
+@media (max-width:520px){
+  .intro-dec-1{ width:min(180px, 36vw); bottom:4vh; left:-6vw; }
+  .intro-dec-2{ width:min(160px, 32vw); top:4vh;    right:-6vw; }
+}
+
 #hero     { position:relative; z-index:1; }
 #letter   { position:relative; z-index:1; }
 #timeline { position:relative; z-index:1; }
@@ -1174,7 +1193,72 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 #player{display:none!important}
 
 /* =================================================
-   15.  REDUCED MOTION
+   15.  MOBILE LAYOUT
+   ================================================= */
+@media (max-width:640px){
+  /* shrink hero / display headings so they fit screen */
+  .display      { font-size:clamp(34px,9vw,56px) }
+  .lede         { font-size:14px }
+  .eyebrow      { font-size:14px }
+
+  /* song picker: stack cards vertically and shrink them */
+  .song-picker  { gap:18px;padding:0 18px }
+  .song-picker-title{ font-size:18px }
+  .song-cards   { gap:14px }
+  .song-card    { width:78vw;max-width:280px;padding:14px;
+                  flex-direction:row;text-align:left;gap:14px;align-items:center }
+  .song-cover   { width:74px;height:74px }
+  .song-meta    { text-align:left;flex:1 }
+  .song-name    { font-size:16px }
+  .song-artist-name{ font-size:13px }
+  .next-btn     { padding:10px 28px;font-size:11px }
+  .song-helper  { font-size:13px;margin-top:14px }
+
+  /* shrink the floating YT player widget so it doesn't hide content */
+  .player       { width:260px;transform:scale(.55) }
+  .player.open  { transform:scale(.55) }
+
+  /* music toggle: keep visible but a touch smaller */
+  .music-toggle-wrap{ right:12px;bottom:12px;gap:8px }
+  .music-toggle { width:52px;height:52px }
+  .toggle-note  { max-width:200px;font-size:12px;padding:8px 12px }
+
+  /* hide oversized decorative flowers — they make the layout look chaotic
+     on small screens.  Petals + twinkles ambient stay. */
+  #flower-layer { display:none }
+
+  /* intro flowers: pull them in so they don't push horizontal scroll */
+  .intro-dec-1  { width:min(130px,32vw);bottom:3vh;left:-3vw;opacity:.85 }
+  .intro-dec-2  { width:min(120px,30vw);top:3vh;right:-3vw;opacity:.85 }
+
+  /* PIN cells: keep them tappable but smaller */
+  .pin-cell     { width:42px;height:54px;font-size:22px }
+  .pin-title    { font-size:18px;line-height:1.35 }
+
+  /* polaroids stack two-per-row on phone instead of cramped 5 */
+  .polaroids    { grid-template-columns:repeat(2,1fr);gap:18px }
+
+  /* the cherish 6-card grid → 2 columns on phone */
+  .cards        { grid-template-columns:repeat(2,1fr);gap:14px }
+  .card         { padding:18px 14px }
+  .card h3      { font-size:18px }
+  .card p       { font-size:13px }
+
+  /* memories grid → 2 columns */
+  .grid         { grid-template-columns:repeat(2,1fr);gap:12px }
+}
+
+/* very narrow phones — extra compression */
+@media (max-width:380px){
+  .song-card    { width:84vw }
+  .song-cover   { width:64px;height:64px }
+  .pin-cell     { width:38px;height:50px;font-size:20px }
+  .pin          { gap:6px }
+  .player       { width:240px }
+}
+
+/* =================================================
+   16.  REDUCED MOTION
    ================================================= */
 @media (prefers-reduced-motion: reduce){
   *{animation:none !important;transition:none !important}
@@ -1783,14 +1867,11 @@ h1,h2,h3{font-weight:400;line-height:1.1}
     klik kalau musiknya iklan ✨<br>
     <span class="dim">pudar = tunggu, cerah = bisa skip</span>
   </div>
-  <div class="toggle-row">
-    <span class="toggle-mini-label">ada iklan?</span>
-    <button class="music-toggle" id="musicToggle" aria-label="Toggle music ad-skipper">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zm12-2a3 3 0 11-6 0 3 3 0 016 0z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-  </div>
+  <button class="music-toggle" id="musicToggle" aria-label="Show YouTube player to skip ads">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zm12-2a3 3 0 11-6 0 3 3 0 016 0z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
 </div>
 
 <div class="player" id="player" role="region" aria-label="Music player">
@@ -1910,10 +1991,13 @@ let ytReady  = false;
     ytPlayer = new YT.Player('ytPlayer', {
       height: '152',
       width: '270',
+      // pre-load Song A so we never end up with an empty iframe that YouTube
+      // fills with a region-recommended random video (the "PECOS_TW" bug).
+      videoId: '5UihqGaL5nM',
       playerVars: {
-        autoplay: 1,           // muted autoplay is allowed by browsers
-        mute: 1,               // start muted, we'll unmute on user tap
-        controls: 1,           // shows YT controls so user can hit ▶ on mobile if blocked
+        autoplay: 0,           // wait for the song-card click (user gesture)
+        mute: 0,
+        controls: 1,           // shows YT controls so user can hit Skip Ad / ▶
         playsinline: 1,        // iOS: play inline instead of full-screen takeover
         disablekb: 1,
         fs: 0,
@@ -2287,10 +2371,15 @@ revealScan();
   const player = document.getElementById('player');
   const close  = document.getElementById('playerClose');
 
-  // PURE show/hide toggle. The widget never unloads the iframe, so audio
-  // keeps playing while it's hidden. Tap it again to surface the YouTube
-  // player and hit "skip ad" if a new ad shows up mid-song.
-  toggle.addEventListener('click', ()=> player.classList.toggle('open'));
+  // Toggle ALWAYS opens the widget. The user might tap when an ad is showing
+  // to reach YouTube's "Skip Ad" button — so we never want this to close
+  // the widget by accident. The × button is the only way to hide.
+  toggle.addEventListener('click', ()=>{
+    player.classList.add('open');
+    // dismiss the note bubble after the first interaction
+    const note = document.getElementById('toggleNote');
+    if(note) note.classList.remove('show');
+  });
   close.addEventListener('click',  ()=> player.classList.remove('open'));
 })();
 </script>
