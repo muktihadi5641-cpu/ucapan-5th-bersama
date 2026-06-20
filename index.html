@@ -387,6 +387,49 @@ a{color:inherit;text-decoration:none}
   100%{transform:scale(1.04) translateY(-10px)}
 }
 
+/* helper hint + next button (revealed after song picked) */
+.song-helper{
+  display:none;
+  margin:22px auto 0;
+  max-width:420px;
+  text-align:center;
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:14px;
+  color:var(--ink-soft);
+  line-height:1.55;
+}
+.song-helper.show{display:block;animation:popIn .5s var(--ease) both}
+.song-helper b{
+  font-style:normal;
+  color:var(--rose);
+  letter-spacing:.03em;
+}
+
+.next-btn{
+  display:none;
+  margin:18px auto 0;
+  padding:12px 36px;
+  background:linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%);
+  color:#1a060e;
+  border:0;border-radius:30px;
+  font-family:var(--sans);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 12px 30px rgba(232,122,150,.45), 0 0 0 1px rgba(255,255,255,.1) inset;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.next-btn.show{display:inline-block;animation:popIn .5s var(--ease) .25s both}
+.next-btn:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(232,122,150,.55)}
+.next-btn:active{transform:translateY(-1px)}
+@keyframes popIn{
+  from{opacity:0;transform:translateY(14px)}
+  to  {opacity:1;transform:none}
+}
+
 /* =================================================
    5.  SCROLL REVEAL
    ================================================= */
@@ -860,12 +903,21 @@ h1,h2,h3{font-weight:400;line-height:1.1}
   box-shadow:0 22px 50px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04) inset;
   font-family:"Inter","Segoe UI",sans-serif;
   color:var(--spt-text);
-  display:none;
-  transform:scale(.6);
+  /* iframe must stay in the DOM at all times so audio keeps playing
+     when the widget is "closed" — use visibility/opacity, NOT display. */
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:scale(.6) translateY(8px);
   transform-origin:left bottom;
+  transition:opacity .3s var(--ease), transform .3s var(--ease), visibility .3s var(--ease);
 }
-.player.open{display:block;animation:popIn .35s var(--ease)}
-@keyframes popIn{from{opacity:0;transform:scale(.6) translateY(8px)}to{opacity:1;transform:scale(.6)}}
+.player.open{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:scale(.6);
+}
 
 .player .cover{
   position:relative;
@@ -1107,6 +1159,12 @@ h1,h2,h3{font-weight:400;line-height:1.1}
       </button>
 
     </div>
+
+    <!-- helper + next button (revealed after a song is picked) -->
+    <p class="song-helper" id="songHelper">
+      kalau ada iklan, tap <b>skip ad</b> di pojok kanan-bawah player ✨
+    </p>
+    <button class="next-btn" id="nextBtn" type="button">lanjut →</button>
   </div>
 
 </div>
@@ -1845,18 +1903,35 @@ let ytReady  = false;
       const start = parseInt(card.dataset.start, 10);
       startSong(ytid, isNaN(start) ? 0 : start);
 
-      // brief chosen-card animation, then show PIN
+      // stay on song picker — reveal helper + Next button so user can deal
+      // with a YouTube pre-roll ad first (tap "skip ad" in the visible player).
       setTimeout(()=>{
-        songPicker.classList.remove('show');
-        songPicker.setAttribute('aria-hidden','true');
-        setTimeout(()=>{
-          pinWrap.classList.add('show');
-          pinWrap.setAttribute('aria-hidden','false');
-          cells[0].focus();
-        }, 400);
+        document.getElementById('songHelper').classList.add('show');
+        document.getElementById('nextBtn').classList.add('show');
+        // dim the non-chosen card
+        document.querySelectorAll('.song-card').forEach(c=>{
+          if(!c.classList.contains('chosen')) c.style.opacity = '.45';
+        });
       }, 520);
     });
   });
+
+  /* ---------- "Next" button → hide widget + transition to PIN ---------- */
+  const nextBtn = document.getElementById('nextBtn');
+  if(nextBtn){
+    nextBtn.addEventListener('click', ()=>{
+      // hide YT popup (audio keeps playing in background)
+      document.getElementById('player').classList.remove('open');
+      document.getElementById('ytHint').classList.remove('show');
+      songPicker.classList.remove('show');
+      songPicker.setAttribute('aria-hidden','true');
+      setTimeout(()=>{
+        pinWrap.classList.add('show');
+        pinWrap.setAttribute('aria-hidden','false');
+        cells[0].focus();
+      }, 400);
+    });
+  }
 
   /* ---------- PIN input flow ---------- */
   function readPin(){
@@ -1998,17 +2073,11 @@ revealScan();
   const player = document.getElementById('player');
   const close  = document.getElementById('playerClose');
 
-  toggle.addEventListener('click', ()=>{
-    if(!ytPlayer){ player.classList.toggle('open'); return; }
-    const state = ytPlayer.getPlayerState ? ytPlayer.getPlayerState() : -1;
-    if(state === 1){ // playing → pause
-      ytPlayer.pauseVideo();
-    } else { // paused/stopped → play
-      ytPlayer.playVideo();
-    }
-    player.classList.add('open');
-  });
-  close.addEventListener('click', ()=> player.classList.remove('open'));
+  // PURE show/hide toggle. The widget never unloads the iframe, so audio
+  // keeps playing while it's hidden. Tap it again to surface the YouTube
+  // player and hit "skip ad" if a new ad shows up mid-song.
+  toggle.addEventListener('click', ()=> player.classList.toggle('open'));
+  close.addEventListener('click',  ()=> player.classList.remove('open'));
 })();
 </script>
 
