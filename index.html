@@ -877,7 +877,7 @@ h1,h2,h3{font-weight:400;line-height:1.1}
    14.  MUSIC WIDGET
    ================================================= */
 .music-toggle-wrap{
-  position:fixed;right:18px;bottom:18px;z-index:40;
+  position:fixed;right:18px;bottom:18px;z-index:60;   /* above #intro (50) so it shows during song-picker */
   display:flex;flex-direction:column;align-items:flex-end;gap:10px;
 }
 .music-toggle{
@@ -888,13 +888,40 @@ h1,h2,h3{font-weight:400;line-height:1.1}
   display:grid;place-items:center;
   color:var(--rose);
   box-shadow:0 10px 28px rgba(0,0,0,.5);
-  transition:transform .3s var(--ease), background .3s var(--ease);
+  transition:transform .3s var(--ease), background .3s var(--ease),
+             opacity .3s var(--ease), color .3s var(--ease);
   cursor:pointer;
 }
 .music-toggle:hover{transform:scale(1.06);background:rgba(74,18,48,.95)}
 .music-toggle:active{transform:scale(.94)}
 .music-toggle.playing svg{animation:spin 4s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* AD STATES (controlled by JS ad-watcher) */
+/* dim + unclickable while the YouTube ad is in its 5s "skip locked" phase */
+.music-toggle.ad-locked{
+  opacity:.32;
+  cursor:not-allowed;
+  pointer-events:none;
+  background:rgba(26,6,14,.55);
+}
+.music-toggle.ad-locked::after{
+  content:"";position:absolute;inset:-4px;border-radius:50%;
+  border:2px dashed rgba(255,177,199,.35);
+  animation:adLockSpin 3s linear infinite;
+}
+@keyframes adLockSpin{to{transform:rotate(360deg)}}
+
+/* bright + pulsing ring once the ad becomes skippable */
+.music-toggle.ad-ready{
+  color:#fff;
+  background:linear-gradient(135deg, var(--rose), var(--rose-deep));
+  animation:adReadyPulse 1.3s ease-in-out infinite;
+}
+@keyframes adReadyPulse{
+  0%,100%{ box-shadow:0 10px 28px rgba(0,0,0,.5), 0 0 0 0    rgba(255,143,169,.55); }
+  50%   { box-shadow:0 10px 28px rgba(0,0,0,.5), 0 0 0 14px rgba(255,143,169,0);   }
+}
 
 /* note bubble attached to the music toggle */
 .toggle-note{
@@ -913,6 +940,10 @@ h1,h2,h3{font-weight:400;line-height:1.1}
   opacity:0;visibility:hidden;
   transform:translateY(8px);
   transition:opacity .4s var(--ease), transform .4s var(--ease), visibility .4s var(--ease);
+}
+.toggle-note .dim{
+  display:inline-block;margin-top:3px;
+  font-size:11px;color:var(--ink-mute);font-style:normal;letter-spacing:.02em;
 }
 .toggle-note.show{
   opacity:1;visibility:visible;transform:translateY(0);
@@ -942,7 +973,7 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 .player{
   --spt-text: #fff;
   --spt-mute: #b3b3b3;
-  position:fixed;left:18px;bottom:18px;z-index:40;
+  position:fixed;left:18px;bottom:18px;z-index:60;     /* above #intro so it shows during song-picker */
   width:280px;
   padding:14px;
   border-radius:14px;
@@ -1717,7 +1748,8 @@ h1,h2,h3{font-weight:400;line-height:1.1}
      ================================================ -->
 <div class="music-toggle-wrap">
   <div class="toggle-note" id="toggleNote">
-    klik ini kalau ada musicnya iklan
+    klik kalau musiknya iklan ✨<br>
+    <span class="dim">pudar = tunggu, cerah = bisa skip</span>
   </div>
   <button class="music-toggle" id="musicToggle" aria-label="Toggle music">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -1882,6 +1914,47 @@ let ytReady  = false;
     });
   };
 
+  /* ---------- AD WATCHER ----------
+     YT IFrame API doesn't expose ad state directly, so we use a heuristic:
+       - getDuration() returns the AD's duration during pre-roll (usually <60s).
+         The actual song durations are 3-5 min, so any "duration < 60" while
+         playing ≈ an ad is running.
+       - getCurrentTime() inside the ad is the seconds into the ad.
+         YouTube allows "Skip Ad" after the 5-second mark, so:
+           currentTime <  5  → ad-locked  (toggle dim, not clickable)
+           currentTime >= 5  → ad-ready   (toggle bright + pulse)
+     Polled every 500ms; lightweight.                              */
+  let adWatcherId = null;
+  function startAdWatcher(){
+    if(adWatcherId) return;
+    const toggle = document.getElementById('musicToggle');
+    adWatcherId = setInterval(()=>{
+      if(!ytPlayer || !ytReady || typeof ytPlayer.getPlayerState !== 'function'){
+        return;
+      }
+      const state = ytPlayer.getPlayerState();   // 1 = PLAYING
+      if(state !== 1){
+        // not playing → clear both ad classes
+        toggle.classList.remove('ad-locked', 'ad-ready');
+        return;
+      }
+      let dur = 0, cur = 0;
+      try { dur = ytPlayer.getDuration() || 0; }   catch(_){}
+      try { cur = ytPlayer.getCurrentTime() || 0;} catch(_){}
+
+      const inAd = dur > 0 && dur < 60;
+      if(inAd && cur < 5){
+        toggle.classList.add('ad-locked');
+        toggle.classList.remove('ad-ready');
+      } else if(inAd){
+        toggle.classList.remove('ad-locked');
+        toggle.classList.add('ad-ready');
+      } else {
+        toggle.classList.remove('ad-locked', 'ad-ready');
+      }
+    }, 500);
+  }
+
   function playSong(ytid, startSec){
     if(!ytPlayer || !ytReady){ pendingPlay = {ytid, startSec}; return; }
     currentStartSec = startSec || 0;
@@ -1964,6 +2037,14 @@ let ytReady  = false;
         document.querySelectorAll('.song-card').forEach(c=>{
           if(!c.classList.contains('chosen')) c.style.opacity = '.45';
         });
+        // surface the toggle-note explaining how the music-note button works
+        const note = document.getElementById('toggleNote');
+        if(note){
+          note.classList.add('show');
+          setTimeout(()=> note.classList.remove('show'), 18000);
+        }
+        // start watching for an ad so the toggle can dim/brighten correctly
+        startAdWatcher();
       }, 520);
     });
   });
@@ -2069,13 +2150,6 @@ let ytReady  = false;
       intro.classList.add('gone');
       document.body.style.overflow='';
       revealScan();
-      // surface the "klik kalau ada iklan" note ~1.2s after entering the page,
-      // auto-fade after 12s in case user ignores it
-      const note = document.getElementById('toggleNote');
-      if(note){
-        setTimeout(()=> note.classList.add('show'), 1200);
-        setTimeout(()=> note.classList.remove('show'), 1200 + 12000);
-      }
     }, 1500);
   }
 
