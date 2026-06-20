@@ -217,6 +217,44 @@
       }
     }
 
+    /* floating memories — slow upward drift of past photos behind everything */
+    #floating-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    #floating-bg img {
+      position: absolute;
+      bottom: -45vh;
+      width: clamp(110px, 16vw, 200px);
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 14px;
+      opacity: 0;
+      filter: blur(.4px) saturate(.85) contrast(.95);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, .35);
+      will-change: transform, opacity;
+      animation: drift-up linear infinite;
+    }
+
+    @keyframes drift-up {
+      0%   { transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg));      opacity: 0; }
+      8%   { opacity: var(--peak, .15); }
+      88%  { opacity: var(--peak, .15); }
+      100% { transform: translate3d(0, -160vh, 0) rotate(var(--rot, 0deg)); opacity: 0; }
+    }
+
+    @media (max-width: 640px) {
+      #floating-bg img { width: clamp(80px, 26vw, 130px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #floating-bg { display: none; }
+    }
+
     /* =================================================
    4.  INTRO  (background + flower icon + PIN gate)
    ================================================= */
@@ -2250,6 +2288,7 @@
 
   <!-- ambient layers -->
   <div class="bg" aria-hidden="true"></div>
+  <div id="floating-bg" aria-hidden="true"></div>
   <div class="twinkles" id="twinkles" aria-hidden="true"></div>
   <div class="petals" id="petals" aria-hidden="true"></div>
 
@@ -3354,6 +3393,52 @@
           audio.play().catch(() => {});
           hint.style.display = 'none';
         });
+      }
+    })();
+
+    /* floating memories — inject ~18 drifting photos behind everything */
+    (function initFloatingBg() {
+      const layer = document.getElementById('floating-bg');
+      if (!layer) return;
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const POOL = [
+        'photos/berdua/2022.jpg',
+        'photos/berdua/2023.webp',
+        'photos/berdua/2024.jpg',
+        'photos/berdua/2025.jpg',
+        'photos/berdua/2026.jpg',
+        'photos/adik/0.jpeg',
+        'photos/adik/2.jpeg',
+        'photos/adik/6.jpeg',
+        'photos/adik/9.jpeg',
+        'photos/adik/34.jpeg',
+        'photos/adik/122.jpeg',
+      ];
+      const COUNT = window.innerWidth < 640 ? 12 : 18;
+      const rand = (a, b) => a + Math.random() * (b - a);
+
+      // shuffle pool so we don't always pick same first
+      const order = POOL.slice().sort(() => Math.random() - 0.5);
+
+      for (let i = 0; i < COUNT; i++) {
+        const img = document.createElement('img');
+        img.src = order[i % order.length];
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        img.alt = '';
+        const dur   = rand(38, 70).toFixed(1);
+        const delay = (-rand(0, parseFloat(dur))).toFixed(1);  // negative offset → no blank initial wait
+        const left  = rand(2, 92).toFixed(1);
+        const peak  = rand(0.10, 0.18).toFixed(2);
+        const rot   = rand(-8, 8).toFixed(1);
+        img.style.left = left + 'vw';
+        img.style.animationDuration = dur + 's';
+        img.style.animationDelay = delay + 's';
+        img.style.setProperty('--peak', peak);
+        img.style.setProperty('--rot', rot + 'deg');
+        img.onerror = () => img.remove();
+        layer.appendChild(img);
       }
     })();
   </script>
