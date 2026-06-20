@@ -3,7 +3,14 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=0.1,viewport-fit=cover" />
+  <script>
+    if (screen.width <= 768) {
+      document.write('<meta name="viewport" content="width=1024, user-scalable=yes" />');
+    } else {
+      document.write('<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />');
+    }
+  </script>
+  
   <title>Sayangkuu</title>
   <meta name="description" content="Sayangkuu" />
 
