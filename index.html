@@ -2020,8 +2020,30 @@
       position: absolute;
       z-index: 0;
       pointer-events: none;
-      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+      filter:
+        drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4))
+        drop-shadow(0 0 12px rgba(255, 210, 226, 0.55))
+        drop-shadow(0 0 28px rgba(255, 168, 198, 0.30))
+        drop-shadow(0 0 48px rgba(232, 122, 150, 0.18));
       opacity: 0.85;
+      animation: floral-glow 5.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes floral-glow {
+      0%   { filter:
+               drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4))
+               drop-shadow(0 0 10px rgba(255, 210, 226, 0.40))
+               drop-shadow(0 0 22px rgba(255, 168, 198, 0.22))
+               drop-shadow(0 0 40px rgba(232, 122, 150, 0.14)); }
+      100% { filter:
+               drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4))
+               drop-shadow(0 0 16px rgba(255, 220, 232, 0.65))
+               drop-shadow(0 0 32px rgba(255, 168, 198, 0.36))
+               drop-shadow(0 0 56px rgba(232, 122, 150, 0.22)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .floral-dec { animation: none; }
     }
 
     .f-float {
