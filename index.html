@@ -239,9 +239,9 @@
     #floating-bg .float-frame {
       position: absolute;
       bottom: -50vh;
-      width: clamp(72px, 6.8vw, 110px);
+      width: clamp(105px, 13vw, 160px);
       background: #f6e7dd;
-      padding: 6px 6px 16px;
+      padding: 8px 8px 22px;
       border-radius: 3px;
       box-shadow: 0 14px 36px -8px rgba(0, 0, 0, .55), 0 0 0 1px rgba(0, 0, 0, .04) inset;
       opacity: 0;
@@ -265,8 +265,8 @@
 
     @media (max-width: 640px) {
       #floating-bg .float-frame {
-        width: clamp(50px, 12.5vw, 72px);
-        padding: 4px 4px 11px;
+        width: clamp(74px, 20vw, 100px);
+        padding: 6px 6px 16px;
       }
     }
 
@@ -3475,8 +3475,8 @@
       ];
 
       const isMobile = window.innerWidth < 640;
-      const LANES = isMobile ? 7 : 13;         // horizontal columns — gap antar lane dipangkas ~setengahnya
-      const WAVES = 2;                          // photos per lane, staggered to half-period
+      const LANES = isMobile ? 4 : 7;          // horizontal columns (gap horizontal kembali ke semula)
+      const WAVES = 4;                          // photos per lane — naik dari 2 ke 4: jarak vertikal antar foto dipangkas setengah
       const BASE_DUR = isMobile ? 55 : 60;     // seconds for one trip
       const rand = (a, b) => a + Math.random() * (b - a);
 
