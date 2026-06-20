@@ -1,0 +1,34 @@
+# dev-only files / unused assets (saved bandwidth + deploy time)
+
+# local mp3 files won't deploy — playback uses Spotify embed instead.
+# album cover jpg/png inside audio/ stay so the song picker still shows artwork.
+audio/*.mp3
+
+# IDE binary & big reference video
+*.exe
+*.mp4
+
+# Python helper scripts
+*.py
+__pycache__/
+
+# server logs / scratch
+*.log
+*.txt
+
+# raw WhatsApp dumps inside photos/adik (already replaced by named files)
+photos/adik/WhatsApp Image*.jpeg
+photos/adik/WhatsApp 2Image*.jpeg
+photos/adik/2.jpeg
+
+# raw heic + duplicate originals inside photos/berdua (already converted)
+photos/berdua/*.HEIC
+photos/berdua/2026(1).jpeg
+photos/berdua/2026(2).jpeg
+photos/berdua/WhatsApp Image*.jpeg
+
+# git / editor cruft
+.git/
+.vscode/
+.DS_Store
+Thumbs.db

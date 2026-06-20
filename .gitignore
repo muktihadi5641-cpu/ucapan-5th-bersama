@@ -1,0 +1,36 @@
+# mp3 files stay local-only (not part of public deploy; audio served via YouTube embed)
+audio/*.mp3
+
+# Vercel local link state
+.vercel/
+
+# IDE binary (huge, not part of the project)
+*.exe
+
+# Reference video (not used at runtime)
+WhatsApp Video*.mp4
+
+# Server logs / scratch
+*.log
+*.tmp
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Raw WhatsApp dumps inside photos/ (replaced by named files)
+photos/adik/WhatsApp Image*.jpeg
+photos/adik/WhatsApp 2Image*.jpeg
+photos/adik/2.jpeg
+photos/berdua/WhatsApp Image*.jpeg
+
+# Raw HEIC originals (already converted to .jpg)
+photos/berdua/*.HEIC
+photos/berdua/2026(1).jpeg
+photos/berdua/2026(2).jpeg
+
+# Deploy / debug preview screenshots
+v-*.png
+v.png
+preview/

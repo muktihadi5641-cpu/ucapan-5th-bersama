@@ -1,0 +1,1953 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Five Years of Us · An Anniversary in Bloom</title>
+<meta name="description" content="A love letter for five beautiful years." />
+
+<!--
+  ============================================================
+  HOW TO CUSTOMIZE
+  ------------------------------------------------------------
+  1. PHOTOS — drop your images into a "photos/" folder next to
+     this file, named 00.jpg ... 17.jpg
+        00.jpg    music album cover
+        01 .. 05  the five "year" polaroids (2021..2025)
+        06 .. 17  the 12 gallery photos
+  2. NAMES / DATES / LOVE LETTER — search this file for
+     the word "EDIT" and change the text after it.
+  3. SONG — both song-cards use Spotify embeds. Replace
+     SPOTIFY_TRACK_ID_A and SPOTIFY_TRACK_ID_B inside the
+     song-picker block with the track IDs from your Spotify
+     share-links (the long alphanumeric after /track/).
+  4. COLORS — tweak the CSS variables in :root below.
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Italiana&family=Petit+Formal+Script&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* =================================================
+   1.  TOKENS
+   ================================================= */
+:root{
+  /* palette — deep wine + dusty rose + cream */
+  --bg-0:        #1a060e;
+  --bg-1:        #2a0a1c;
+  --bg-2:        #3a0e26;
+  --bg-3:        #4a1230;
+
+  --ink:         #f6e7dd;          /* primary text */
+  --ink-soft:    #d9c4ba;
+  --ink-mute:    #9b8079;
+
+  --rose:        #ffb1c7;          /* italic accent */
+  --rose-deep:   #e87a96;
+  --rose-glow:   #ff8fa9;
+  --gold:        #d4a574;          /* subtle metallic */
+
+  --card-bg:     rgba(74, 18, 48, .45);
+  --card-bd:     rgba(255, 177, 199, .14);
+  --card-bg-hi:  rgba(74, 18, 48, .65);
+
+  --serif:       "Cormorant Garamond", "Times New Roman", serif;
+  --display:     "Italiana", "Cormorant Garamond", serif;
+  --script:      "Petit Formal Script", "Cormorant Garamond", cursive;
+  --sans:        "Inter", system-ui, -apple-system, sans-serif;
+
+  --shadow-card: 0 30px 80px -30px rgba(0,0,0,.7),
+                 0 0 0 1px var(--card-bd) inset;
+
+  --ease:        cubic-bezier(.2,.7,.2,1);
+}
+
+/* =================================================
+   2.  RESET + BASE
+   ================================================= */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background:var(--bg-0);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img{display:block;max-width:100%;height:auto}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:4px}
+
+/* =================================================
+   3.  AMBIENT BACKGROUND  (wine gradient + glow + petals)
+   ================================================= */
+.bg{
+  position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(1200px 800px at 75% 10%, rgba(232,122,150,.18), transparent 60%),
+    radial-gradient(900px 700px at 15% 80%, rgba(212,165,116,.10), transparent 65%),
+    radial-gradient(700px 500px at 60% 55%, rgba(255,143,169,.10), transparent 70%),
+    linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 35%, var(--bg-2) 70%, var(--bg-0) 100%);
+}
+.bg::after{                       /* film grain */
+  content:"";position:absolute;inset:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 .85  0 0 0 0 .88  0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity:.5;mix-blend-mode:overlay;pointer-events:none;
+}
+
+/* floating petals layer */
+.petals{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.petals span{
+  position:absolute;top:-40px;
+  font-size:18px;opacity:0;
+  filter:drop-shadow(0 2px 6px rgba(255,143,169,.35));
+  animation:fall linear infinite;
+  will-change:transform,opacity;
+}
+@keyframes fall{
+  0%   {transform:translate3d(0,-10vh,0) rotate(0deg);   opacity:0}
+  10%  {opacity:.9}
+  90%  {opacity:.9}
+  100% {transform:translate3d(40px,110vh,0) rotate(540deg); opacity:0}
+}
+
+/* tiny twinkles */
+.twinkles{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.twinkles i{
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:#ffd9e3;box-shadow:0 0 8px #ffb1c7;
+  animation:twinkle 4s ease-in-out infinite;
+  will-change:opacity,transform;
+}
+@keyframes twinkle{
+  0%,100%{opacity:.15;transform:scale(.8)}
+  50%    {opacity:.95;transform:scale(1.2)}
+}
+
+/* =================================================
+   4.  INTRO  (background + flower icon + PIN gate)
+   ================================================= */
+#intro{
+  position:fixed;inset:0;z-index:50;
+  display:grid;place-items:center;
+  background:
+    radial-gradient(800px 500px at 50% 45%, rgba(232,122,150,.18), transparent 70%),
+    linear-gradient(180deg, rgba(26,6,14,.55), rgba(26,6,14,.85)),
+    url("background.jpg") center/cover no-repeat;
+  transition:opacity .9s var(--ease), visibility .9s var(--ease);
+}
+#intro.gone{opacity:0;visibility:hidden;pointer-events:none}
+
+.gift-wrap{
+  text-align:center;user-select:none;
+  transition:opacity .5s var(--ease), transform .5s var(--ease);
+}
+.gift-wrap.away{opacity:0;transform:scale(.85) translateY(-20px);pointer-events:none}
+
+.gift{
+  width:clamp(140px,22vw,240px);
+  height:clamp(140px,22vw,240px);
+  display:inline-grid;place-items:center;
+  cursor:pointer;
+  transform-origin:50% 70%;
+  animation:bob 3.2s ease-in-out infinite;
+  filter:drop-shadow(0 30px 50px rgba(232,122,150,.55));
+  transition:transform .25s var(--ease);
+  background:none;border:0;padding:0;
+}
+.gift img{
+  width:100%;height:100%;object-fit:contain;
+  pointer-events:none;
+  -webkit-user-drag:none;user-select:none;
+}
+.gift:hover{transform:scale(1.04)}
+.gift:active{transform:scale(.96)}
+@keyframes bob{
+  0%,100%{transform:translateY(0) rotate(-2deg)}
+  50%    {transform:translateY(-14px) rotate(2deg)}
+}
+.gift-hint{
+  margin-top:32px;
+  font-family:var(--script);
+  color:var(--rose);
+  font-size:clamp(16px,2vw,20px);
+  letter-spacing:.04em;
+  opacity:.9;
+  animation:pulseHint 2.4s ease-in-out infinite;
+}
+@keyframes pulseHint{
+  0%,100%{opacity:.55;transform:translateY(0)}
+  50%    {opacity:1;   transform:translateY(-3px)}
+}
+
+/* small burst on first tap (around the flower) */
+.burst{position:absolute;inset:0;pointer-events:none}
+.burst span{
+  position:absolute;left:50%;top:50%;
+  font-size:26px;opacity:0;
+  transform:translate(-50%,-50%);
+  will-change:transform,opacity;
+}
+.burst.go span{
+  animation:burst 1.4s var(--ease) forwards;
+}
+@keyframes burst{
+  0%  {opacity:0;transform:translate(-50%,-50%) scale(.4)}
+  20% {opacity:1}
+  100%{opacity:0;
+       transform:translate(calc(-50% + var(--x,0px)), calc(-50% + var(--y,0px))) scale(1.1) rotate(var(--r,180deg))}
+}
+
+/* full-screen flower fill (after correct PIN) */
+.fill{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+.fill span{
+  position:absolute;
+  font-size:clamp(28px,4vw,52px);
+  opacity:0;
+  filter:drop-shadow(0 6px 16px rgba(232,122,150,.45));
+  animation:fillFlower 1.4s cubic-bezier(.2,.7,.2,1) forwards;
+}
+@keyframes fillFlower{
+  0%  {opacity:0;transform:scale(0) rotate(-180deg)}
+  60% {opacity:1;transform:scale(1.6) rotate(0deg)}
+  100%{opacity:0;transform:scale(3) rotate(40deg)}
+}
+
+/* ===== PIN GATE ===== */
+.pin-wrap{
+  position:absolute;
+  display:flex;flex-direction:column;align-items:center;gap:22px;
+  opacity:0;transform:translateY(24px);
+  pointer-events:none;
+  transition:opacity .5s var(--ease) .25s, transform .5s var(--ease) .25s;
+  padding:0 24px;
+  text-align:center;
+}
+.pin-wrap.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.pin-title{
+  font-family:var(--script);
+  color:var(--rose);
+  font-size:clamp(20px,3vw,30px);
+  letter-spacing:.02em;
+  line-height:1.3;
+  max-width:520px;
+  text-shadow:0 4px 22px rgba(0,0,0,.5);
+}
+.pin{
+  display:flex;gap:clamp(8px,1.5vw,14px);
+  justify-content:center;
+}
+.pin-cell{
+  width:clamp(40px,7vw,52px);
+  height:clamp(52px,9vw,64px);
+  text-align:center;
+  background:rgba(26,6,14,.55);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,177,199,.25);
+  border-radius:12px;
+  color:var(--ink);
+  font-family:var(--display);
+  font-size:clamp(20px,3vw,28px);
+  outline:none;
+  caret-color:var(--rose);
+  transition:border-color .2s var(--ease), background .2s var(--ease), transform .2s var(--ease);
+}
+.pin-cell:focus{
+  border-color:var(--rose);
+  background:rgba(74,18,48,.65);
+  transform:translateY(-2px);
+}
+.pin-cell.filled{border-color:var(--rose-glow)}
+.pin.wrong{animation:shake .5s var(--ease)}
+.pin.wrong .pin-cell{border-color:#e23a5a;background:rgba(60,10,20,.7)}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%,60%{transform:translateX(-8px)}
+  40%,80%{transform:translateX(8px)}
+}
+.pin-foot{
+  font-family:var(--sans);
+  color:var(--ink-mute);
+  font-size:11px;
+  letter-spacing:.4em;
+  text-transform:uppercase;
+}
+.pin-foot.err{color:#e23a5a;letter-spacing:.04em;text-transform:none;font-family:var(--serif);font-style:italic;font-size:13px}
+
+/* =================================================
+   SONG PICKER  (between gift tap and PIN gate)
+   ================================================= */
+.song-picker{
+  position:absolute;
+  display:flex;flex-direction:column;align-items:center;gap:26px;
+  opacity:0;transform:translateY(24px);
+  pointer-events:none;
+  transition:opacity .5s var(--ease) .25s, transform .5s var(--ease) .25s;
+  padding:0 24px;
+  text-align:center;
+  width:100%;max-width:560px;
+}
+.song-picker.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.song-picker-title{
+  font-family:var(--script);
+  color:var(--rose);
+  font-size:clamp(18px,2.8vw,26px);
+  letter-spacing:.02em;
+  line-height:1.3;
+  text-shadow:0 4px 22px rgba(0,0,0,.5);
+}
+.song-cards{
+  display:flex;gap:clamp(14px,3vw,26px);justify-content:center;
+  flex-wrap:wrap;
+}
+.song-card{
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  padding:clamp(14px,2.5vw,22px);
+  background:rgba(26,6,14,.68);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,177,199,.18);
+  border-radius:22px;
+  width:clamp(140px,28vw,192px);
+  cursor:pointer;
+  transition:transform .4s var(--ease), background .4s var(--ease),
+             border-color .4s var(--ease), box-shadow .4s var(--ease);
+  box-shadow:0 18px 50px rgba(0,0,0,.55);
+  font:inherit;color:inherit;
+}
+.song-card:hover{
+  transform:translateY(-10px) scale(1.04);
+  background:rgba(74,18,48,.82);
+  border-color:rgba(255,143,169,.55);
+  box-shadow:0 28px 70px rgba(0,0,0,.65), 0 0 40px rgba(255,143,169,.18);
+}
+.song-card:active{transform:scale(.97)}
+.song-cover{
+  position:relative;
+  width:clamp(100px,18vw,152px);
+  height:clamp(100px,18vw,152px);
+  border-radius:14px;
+  overflow:hidden;
+  background:linear-gradient(135deg,#3a0e26,#1a060e);
+  box-shadow:0 12px 35px rgba(0,0,0,.6);
+  flex-shrink:0;
+}
+.song-cover img{
+  width:100%;height:100%;object-fit:cover;
+  display:block;
+  transition:transform .45s var(--ease);
+  -webkit-user-drag:none;user-select:none;
+}
+.song-card:hover .song-cover img{transform:scale(1.08)}
+.song-cover-play{
+  position:absolute;inset:0;
+  display:grid;place-items:center;
+  background:rgba(0,0,0,.38);
+  opacity:0;
+  transition:opacity .3s var(--ease);
+  border-radius:14px;
+}
+.song-card:hover .song-cover-play{opacity:1}
+.song-cover-play svg{
+  filter:drop-shadow(0 3px 10px rgba(0,0,0,.6));
+  color:#fff;
+}
+.song-meta{text-align:center}
+.song-name{
+  font-family:var(--display);
+  font-size:clamp(12px,1.8vw,15px);
+  color:var(--ink);
+  letter-spacing:.02em;
+  line-height:1.3;
+}
+.song-artist-name{
+  font-family:var(--serif);
+  font-size:clamp(11px,1.3vw,13px);
+  color:var(--rose);
+  font-style:italic;
+  margin-top:3px;
+  min-height:1em;
+}
+.song-card.chosen{
+  border-color:var(--rose);
+  background:rgba(74,18,48,.94);
+  pointer-events:none;
+  box-shadow:0 0 50px rgba(255,143,169,.3), 0 28px 70px rgba(0,0,0,.65);
+  animation:songChosen .55s var(--ease) forwards;
+}
+@keyframes songChosen{
+  0%  {transform:scale(1)}
+  45% {transform:scale(1.08) translateY(-6px)}
+  100%{transform:scale(1.04) translateY(-10px)}
+}
+
+/* =================================================
+   5.  SCROLL REVEAL
+   ================================================= */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease), transform .9s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-delay="1"]{transition-delay:.10s}
+.reveal[data-delay="2"]{transition-delay:.22s}
+.reveal[data-delay="3"]{transition-delay:.34s}
+.reveal[data-delay="4"]{transition-delay:.46s}
+.reveal[data-delay="5"]{transition-delay:.58s}
+
+/* =================================================
+   6.  LAYOUT PRIMITIVES
+   ================================================= */
+.shell{max-width:1180px;margin:0 auto;padding:0 24px}
+section{position:relative;padding:120px 0;overflow:hidden}
+@media (max-width:640px){ section{padding:80px 0} }
+
+.eyebrow{
+  font-family:var(--script);
+  color:var(--rose);
+  font-size:clamp(15px,1.6vw,19px);
+  letter-spacing:.02em;
+  text-align:center;
+  opacity:.9;
+}
+h1,h2,h3{font-weight:400;line-height:1.1}
+
+.display{
+  font-family:var(--display);
+  text-align:center;
+  font-size:clamp(40px,7vw,84px);
+  letter-spacing:.005em;
+  margin:14px 0 22px;
+}
+.display em{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:500;
+  color:var(--rose);
+  background:linear-gradient(180deg, var(--rose) 0%, var(--rose-deep) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.lede{
+  max-width:560px;margin:0 auto;
+  text-align:center;
+  color:var(--ink-soft);
+  font-family:var(--serif);
+  font-size:clamp(15px,1.7vw,19px);
+  font-weight:300;
+  line-height:1.7;
+}
+
+/* =================================================
+   7.  HERO
+   ================================================= */
+#hero{min-height:100vh;display:grid;place-items:center;text-align:center}
+#hero .shell{position:relative;z-index:1}
+.hero-flower{
+  font-size:48px;
+  display:inline-block;
+  margin-top:14px;
+  filter:drop-shadow(0 8px 20px rgba(232,122,150,.45));
+  animation:floaty 5s ease-in-out infinite;
+}
+@keyframes floaty{
+  0%,100%{transform:translateY(0) rotate(-3deg)}
+  50%    {transform:translateY(-10px) rotate(3deg)}
+}
+.cta{
+  margin-top:54px;
+  display:inline-flex;flex-direction:column;align-items:center;gap:10px;
+  font-family:var(--sans);
+  font-size:11px;letter-spacing:.5em;text-transform:uppercase;
+  color:var(--ink-mute);
+  transition:color .3s var(--ease), transform .3s var(--ease);
+}
+.cta:hover, .cta:focus-visible{color:var(--rose);transform:translateY(-2px)}
+.cta:active{transform:translateY(0)}
+.cta svg{animation:bounceY 2s ease-in-out infinite}
+@keyframes bounceY{
+  0%,100%{transform:translateY(0)}
+  50%    {transform:translateY(6px)}
+}
+
+/* =================================================
+   8.  LETTER CARD
+   ================================================= */
+.letter{
+  max-width:760px;margin:0 auto;
+  padding:clamp(36px,5vw,64px) clamp(28px,4vw,56px);
+  background:var(--card-bg);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  border-radius:28px;
+  box-shadow:var(--shadow-card);
+  text-align:center;
+}
+.letter .row-emoji{font-size:24px;letter-spacing:.5em;margin-bottom:18px}
+.letter h2{
+  font-family:var(--display);
+  font-size:clamp(32px,5vw,58px);
+  margin:6px 0 26px;
+  line-height:1.15;
+}
+.letter h2 em{
+  font-family:var(--serif);
+  font-style:italic;font-weight:500;
+  color:var(--rose-glow);
+}
+.letter p{
+  max-width:560px;margin:14px auto;
+  font-family:var(--serif);
+  font-size:clamp(15px,1.6vw,18px);
+  font-weight:300;
+  line-height:1.85;
+  color:var(--ink-soft);
+}
+.letter .signoff{
+  margin-top:34px;
+  font-family:var(--serif);
+  font-style:italic;
+  color:var(--rose-deep);
+  font-size:clamp(15px,1.6vw,18px);
+}
+
+/* =================================================
+   9.  TIMELINE POLAROIDS  (5 years)
+   ================================================= */
+.polaroids{
+  margin-top:64px;
+  display:grid;
+  grid-template-columns:repeat(5, minmax(0,1fr));
+  gap:24px;
+}
+@media (max-width:900px){
+  .polaroids{grid-template-columns:repeat(2,1fr);gap:36px 18px}
+}
+.polaroid{
+  position:relative;                  /* anchor for the floral overlay */
+  background:#f6e7dd;
+  padding:14px 14px 22px;
+  box-shadow:0 18px 40px -10px rgba(0,0,0,.55), 0 0 0 1px rgba(0,0,0,.05) inset;
+  text-align:center;
+  transform:rotate(var(--rot,-2deg));
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+.polaroid:nth-child(odd) {--rot: -2.5deg}
+.polaroid:nth-child(even){--rot:  3deg}
+.polaroid:hover{
+  transform:rotate(0deg) translateY(-6px) scale(1.02);
+  box-shadow:0 28px 60px -10px rgba(0,0,0,.7);
+}
+
+/* tucked-in flower on each polaroid — square box keeps tall stems from
+   overflowing past the polaroid edge; object-fit centers the bloom inside,
+   transform-origin is bottom so the rotation/sway pivots from the stem.   */
+.polaroid .floral{
+  position:absolute;
+  width:clamp(64px, 28%, 96px);
+  height:clamp(64px, 28%, 96px);
+  object-fit:contain;
+  object-position:center bottom;
+  z-index:3;
+  pointer-events:none;
+  -webkit-user-drag:none;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.45));
+  transform-origin:50% 90%;
+  will-change:transform;
+}
+/* per-polaroid corner + base rotation + animation
+   small offsets keep the bloom hugging the frame instead of bleeding into
+   the next section on mobile.                                              */
+.polaroid:nth-child(1) .floral{ bottom:-8px;  left:-8px;   --r:-22deg; animation:flA 4.4s ease-in-out infinite }
+.polaroid:nth-child(2) .floral{ top:-12px;    right:-8px;  --r: 24deg; animation:flB 5.0s ease-in-out infinite }
+.polaroid:nth-child(3) .floral{ bottom:-8px;  right:-8px;  --r:-18deg; animation:flA 4.7s ease-in-out infinite .3s }
+.polaroid:nth-child(4) .floral{ top:-12px;    left:-8px;   --r: 26deg; animation:flB 5.2s ease-in-out infinite .15s }
+.polaroid:nth-child(5) .floral{ bottom:-10px; left:50%;    --r:-12deg; animation:flC 5.4s ease-in-out infinite;
+                                 transform:translateX(-50%) rotate(var(--r)) }
+
+/* on narrow phones, the polaroids stack 2-per-row and a tucked flower can
+   collide with the polaroid below it — give it a touch more breathing room. */
+@media (max-width:520px){
+  .polaroid .floral{ width:clamp(50px, 22%, 78px); height:clamp(50px, 22%, 78px); }
+  .polaroid:nth-child(1) .floral,
+  .polaroid:nth-child(3) .floral,
+  .polaroid:nth-child(5) .floral{ bottom:-4px }
+  .polaroid:nth-child(2) .floral,
+  .polaroid:nth-child(4) .floral{ top:-6px }
+}
+@keyframes flA{
+  0%,100%{ transform:rotate(var(--r))                translateY(0)   scale(1)    }
+  50%    { transform:rotate(calc(var(--r) + 10deg))  translateY(-8px) scale(1.05) }
+}
+@keyframes flB{
+  0%,100%{ transform:rotate(var(--r))                translateY(0)   scale(1)    }
+  50%    { transform:rotate(calc(var(--r) - 10deg))  translateY(-6px) scale(1.05) }
+}
+@keyframes flC{
+  0%,100%{ transform:translateX(-50%) rotate(var(--r))                translateY(0)   scale(1)    }
+  50%    { transform:translateX(-50%) rotate(calc(var(--r) + 8deg))   translateY(-8px) scale(1.06) }
+}
+.photo{
+  position:relative;
+  width:100%;
+  aspect-ratio:4/5;
+  overflow:hidden;
+  background:linear-gradient(135deg, #3a0e26, #1a060e);
+}
+.photo img{width:100%;height:100%;object-fit:cover}
+.photo[data-slot]::after{       /* placeholder shown while img missing */
+  content:"photo " attr(data-slot);
+  position:absolute;inset:0;
+  display:grid;place-items:center;
+  font-family:var(--script);
+  color:#f6e7dd;opacity:.7;
+  letter-spacing:.04em;font-size:14px;
+  pointer-events:none;
+}
+.photo img[src]:not([src=""]){position:relative;z-index:1}
+.polaroid .year{
+  margin-top:12px;
+  font-family:var(--display);
+  color:#2a0a1c;font-size:20px;
+  letter-spacing:.05em;
+}
+.polaroid .cap{
+  margin-top:2px;
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:13px;
+  color:#5a2a3a;
+  letter-spacing:.01em;
+  padding:0 6px;
+}
+
+/* =================================================
+   10.  CHERISH CARDS  (6 cards)
+   ================================================= */
+.cards{
+  margin-top:64px;
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:18px;
+}
+@media (max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.cards{grid-template-columns:1fr}}
+
+.card{
+  position:relative;
+  padding:36px 28px;
+  background:var(--card-bg);
+  border-radius:20px;
+  box-shadow:var(--shadow-card);
+  text-align:center;
+  transition:transform .5s var(--ease), background .5s var(--ease);
+}
+.card:hover{transform:translateY(-6px);background:var(--card-bg-hi)}
+.card .ico{
+  font-size:38px;line-height:1;
+  display:inline-block;
+  filter:drop-shadow(0 6px 14px rgba(232,122,150,.4));
+  animation:floaty 6s ease-in-out infinite;
+}
+
+/* photo-version of the card icon — circular floating avatar */
+.card .ico-photo{
+  width:clamp(72px, 9vw, 96px);
+  height:clamp(72px, 9vw, 96px);
+  border-radius:50%;
+  overflow:hidden;
+  background:linear-gradient(135deg, #3a0e26, #1a060e);
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.5),
+    0 0 0 3px rgba(255,177,199,.18),
+    0 0 0 5px rgba(255,177,199,.05);
+  animation:floaty 6s ease-in-out infinite;
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+.card .ico-photo img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  -webkit-user-drag:none;
+  user-select:none;
+}
+.card:hover .ico-photo{
+  box-shadow:
+    0 18px 38px rgba(0,0,0,.6),
+    0 0 0 3px var(--rose),
+    0 0 0 6px rgba(255,177,199,.12);
+}
+/* stagger the bob so each card floats independently */
+.card:nth-child(1) .ico-photo{ animation-delay: .0s;  animation-duration:6.0s }
+.card:nth-child(2) .ico-photo{ animation-delay: .7s;  animation-duration:6.6s }
+.card:nth-child(3) .ico-photo{ animation-delay:1.4s;  animation-duration:6.2s }
+.card:nth-child(4) .ico-photo{ animation-delay: .35s; animation-duration:6.8s }
+.card:nth-child(5) .ico-photo{ animation-delay:1.1s;  animation-duration:6.4s }
+.card:nth-child(6) .ico-photo{ animation-delay:1.8s;  animation-duration:6.0s }
+.card h3{
+  margin:18px 0 10px;
+  font-family:var(--display);
+  font-size:24px;letter-spacing:.01em;
+  color:var(--ink);
+}
+.card p{
+  font-family:var(--serif);
+  font-size:15px;
+  font-weight:300;
+  line-height:1.7;
+  color:var(--ink-mute);
+}
+
+/* =================================================
+   11.  GARDEN  (5 hoverable flowers on stems)
+   ================================================= */
+.garden{
+  margin-top:64px;
+  display:flex;justify-content:center;align-items:flex-end;
+  gap:clamp(20px,5vw,60px);
+  min-height:240px;
+}
+.bloom{
+  position:relative;
+  display:flex;flex-direction:column;align-items:center;
+  cursor:pointer;
+}
+.bloom .stem{
+  width:2px;height:130px;
+  background:linear-gradient(180deg, #5a8c4a, #2a5a30);
+  border-radius:2px;
+}
+.bloom .flower{
+  font-size:42px;line-height:1;
+  margin-bottom:-6px;
+  filter:drop-shadow(0 8px 18px rgba(232,122,150,.45));
+  transition:transform .35s var(--ease);
+  animation:swing 4s ease-in-out infinite;
+}
+.bloom:nth-child(2) .flower{animation-delay:.4s}
+.bloom:nth-child(3) .flower{animation-delay:.8s}
+.bloom:nth-child(4) .flower{animation-delay:1.2s}
+.bloom:nth-child(5) .flower{animation-delay:1.6s}
+@keyframes swing{
+  0%,100%{transform:rotate(-4deg) translateY(0)}
+  50%    {transform:rotate(4deg)  translateY(-3px)}
+}
+.bloom:hover .flower, .bloom:focus-visible .flower{
+  transform:scale(1.2) rotate(0);
+  animation-play-state:paused;
+}
+.tooltip{
+  position:absolute;left:50%;bottom:calc(100% + 18px);
+  transform:translate(-50%, 6px);
+  background:rgba(26,6,14,.92);
+  border:1px solid var(--card-bd);
+  padding:10px 16px;border-radius:12px;
+  font-family:var(--serif);
+  font-size:13px;line-height:1.4;
+  white-space:nowrap;
+  color:var(--ink);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s var(--ease), transform .3s var(--ease);
+}
+.tooltip b{
+  display:block;
+  font-family:var(--display);
+  color:var(--rose);font-size:14px;
+  font-weight:400;letter-spacing:.06em;
+}
+.bloom:hover .tooltip, .bloom:focus-within .tooltip{
+  opacity:1;transform:translate(-50%, 0);
+}
+.garden-foot{
+  margin-top:46px;text-align:center;
+  font-family:var(--serif);font-style:italic;
+  color:var(--ink-mute);font-size:13px;
+}
+
+/* =================================================
+   12.  MEMORIES GRID  (12 photos with word labels)
+   ================================================= */
+.dashed{
+  text-align:center;margin-bottom:18px;
+  font-family:var(--sans);font-size:10px;letter-spacing:.5em;
+  text-transform:uppercase;color:var(--ink-mute);
+}
+.dashed span{position:relative;padding:0 14px}
+.dashed span::before,.dashed span::after{
+  content:"";position:absolute;top:50%;width:36px;height:1px;
+  background:linear-gradient(90deg, transparent, var(--ink-mute), transparent);
+}
+.dashed span::before{right:100%}
+.dashed span::after{left:100%}
+
+.grid{
+  margin-top:64px;
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  gap:18px;
+}
+@media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+.tile{
+  position:relative;
+  border-radius:14px;overflow:hidden;
+  background:var(--card-bg);
+  box-shadow:var(--shadow-card);
+  transition:transform .5s var(--ease);
+}
+.tile:hover{transform:translateY(-4px) scale(1.01)}
+.tile .photo{aspect-ratio:1/1}
+.tile .label{
+  position:absolute;left:0;right:0;bottom:0;
+  padding:12px;text-align:center;
+  font-family:var(--serif);font-style:italic;
+  font-size:14px;color:var(--rose);
+  background:linear-gradient(0deg, rgba(26,6,14,.85) 30%, transparent);
+  z-index:2;
+  letter-spacing:.02em;
+}
+
+/* =================================================
+   13.  CLOSING
+   ================================================= */
+.closing{text-align:center}
+.heart{
+  display:inline-block;
+  font-size:48px;margin:30px 0 26px;
+  filter:drop-shadow(0 8px 18px rgba(232,122,150,.55));
+  animation:beat 1.4s ease-in-out infinite;
+}
+@keyframes beat{
+  0%,100%{transform:scale(1)}
+  50%    {transform:scale(1.12)}
+}
+.signature{
+  font-family:var(--script);
+  color:var(--rose);
+  font-size:18px;
+  margin-top:30px;
+  opacity:.9;
+}
+
+/* =================================================
+   14.  MUSIC WIDGET
+   ================================================= */
+.music-toggle{
+  position:fixed;right:18px;bottom:18px;z-index:40;
+  width:46px;height:46px;border-radius:50%;
+  background:rgba(26,6,14,.85);
+  border:1px solid var(--card-bd);
+  display:grid;place-items:center;
+  color:var(--rose);
+  box-shadow:0 10px 28px rgba(0,0,0,.5);
+  transition:transform .3s var(--ease), background .3s var(--ease);
+}
+.music-toggle:hover{transform:scale(1.06);background:rgba(74,18,48,.95)}
+.music-toggle:active{transform:scale(.94)}
+.music-toggle.playing svg{animation:spin 4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Spotify-style mini player with spinning vinyl cover */
+.player{
+  --spt-text: #fff;
+  --spt-mute: #b3b3b3;
+  position:fixed;left:18px;bottom:18px;z-index:40;
+  width:280px;
+  padding:14px;
+  border-radius:14px;
+  background:linear-gradient(180deg, #2a2128, #121212);
+  box-shadow:0 22px 50px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04) inset;
+  font-family:"Inter","Segoe UI",sans-serif;
+  color:var(--spt-text);
+  display:none;
+  transform:scale(.6);
+  transform-origin:left bottom;
+}
+.player.open{display:block;animation:popIn .35s var(--ease)}
+@keyframes popIn{from{opacity:0;transform:scale(.6) translateY(8px)}to{opacity:1;transform:scale(.6)}}
+
+.player .cover{
+  position:relative;
+  width:100%;aspect-ratio:1;
+  border-radius:50%;
+  overflow:hidden;
+  background:radial-gradient(circle at 50% 50%, #2a2128 0 18%, #0c0c0c 22% 100%);
+  box-shadow:0 12px 30px rgba(0,0,0,.55), 0 0 0 4px #0c0c0c inset, 0 0 0 5px rgba(255,255,255,.06) inset;
+}
+.player .cover::before{
+  content:"";position:absolute;inset:6%;border-radius:50%;
+  background:repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,.04) 0 1px, transparent 1px 4px);
+  z-index:2;pointer-events:none;
+}
+.player .cover::after{
+  content:"";position:absolute;top:50%;left:50%;width:14%;height:14%;
+  border-radius:50%;background:#0c0c0c;
+  box-shadow:0 0 0 2px rgba(255,255,255,.18) inset;
+  transform:translate(-50%,-50%);z-index:3;
+}
+.player .cover img{
+  width:100%;height:100%;object-fit:cover;position:relative;z-index:1;border-radius:50%;
+  animation:spin 12s linear infinite;animation-play-state:paused;
+}
+.player.playing .cover img{animation-play-state:running}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.player .meta{margin-top:14px;min-width:0}
+.player .title{
+  display:flex;align-items:center;gap:8px;
+  font-size:15px;font-weight:700;color:#fff;line-height:1.2;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.player .artist{
+  margin-top:3px;font-size:12px;color:#b3b3b3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.player .eq{display:none;align-items:flex-end;gap:2px;height:12px;margin-left:auto}
+.player.playing .eq{display:inline-flex}
+.player .eq span{display:block;width:2px;border-radius:1px;background:#1DB954;animation:eq 1s ease-in-out infinite}
+.player .eq span:nth-child(2){animation-delay:.18s}
+.player .eq span:nth-child(3){animation-delay:.36s}
+@keyframes eq{0%,100%{height:25%}50%{height:100%}}
+
+.player .close{
+  position:absolute;top:8px;right:8px;
+  width:24px;height:24px;border-radius:50%;
+  color:#b3b3b3;font-size:16px;line-height:1;background:transparent;border:0;
+  transition:color .2s, background .2s;
+}
+.player .close:hover{color:#fff;background:rgba(255,255,255,.08)}
+
+@media (max-width:520px){.player{width:240px;left:12px;bottom:12px}}
+
+/* =================================================
+   14.5  FLOATING FLOWER DECORATIONS
+   ================================================= */
+.floral-dec { position:absolute; z-index:0; pointer-events:none; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)); opacity:0.85; }
+.f-float { animation: f-float 8s ease-in-out infinite alternate; }
+.f-float-rev { animation: f-float-rev 10s ease-in-out infinite alternate; }
+@keyframes f-float { 0% { transform:translateY(0) rotate(0); } 100% { transform:translateY(-20px) rotate(4deg); } }
+@keyframes f-float-rev { 0% { transform:translateY(0) rotate(0); } 100% { transform:translateY(-15px) rotate(-4deg); } }
+
+/* Hero */
+#hero { position:relative; z-index:1; }
+.hero-dec-1 { bottom:-150px; right:-120px; width:550px; opacity:0.95; z-index:0; }
+.hero-dec-2 { top:-20px; left:-80px; width:220px; opacity:0.8; transform:rotate(15deg); }
+
+/* Letter */
+#letter { position:relative; z-index:1; }
+.letter-dec-1 { top:-110px; left:-80px; width:350px; opacity:0.85; transform:rotate(-10deg); z-index:0; }
+.letter-dec-2 { bottom:-30px; right:-40px; width:200px; opacity:0.7; transform:rotate(20deg); }
+
+/* Timeline */
+#timeline { position:relative; z-index:1; }
+.timeline-dec-1 { top:25%; right:-60px; width:260px; opacity:0.6; transform:rotate(15deg); }
+.timeline-dec-2 { bottom:15%; left:-50px; width:180px; opacity:0.7; transform:rotate(-20deg); }
+
+/* Cherish */
+#cherish { position:relative; z-index:1; }
+.cherish-dec-1 { top:-60px; right:-70px; width:350px; opacity:0.5; z-index:0; transform:rotate(10deg); }
+.cherish-dec-2 { bottom:20%; left:-50px; width:220px; opacity:0.6; }
+
+/* Garden */
+#garden { position:relative; z-index:1; }
+.garden-dec-1 { bottom:-150px; left:-120px; width:450px; opacity:0.9; transform:rotate(-15deg); }
+.garden-dec-2 { top:10%; right:-40px; width:200px; opacity:0.7; transform:rotate(25deg); }
+
+/* Memories Grid Accent */
+#memories { position:relative; z-index:1; }
+.mem-dec-1 { top:5%; right:-60px; width:250px; opacity:0.6; }
+.mem-dec-2 { bottom:10%; left:-60px; width:280px; opacity:0.8; transform:rotate(-15deg); }
+
+/* Closing */
+#closing { position:relative; z-index:1; overflow:hidden; }
+.closing-dec-1 { bottom:-60px; right:-50px; width:350px; opacity:0.9; transform:rotate(-5deg); z-index:0; }
+
+/* Intro (Cover) */
+#intro { position:fixed; z-index:9999; }
+.intro-dec-1 { top:-50px; right:-50px; width:280px; opacity:0.8; transform:rotate(15deg); z-index:-1; }
+.intro-dec-2 { bottom:-60px; left:-60px; width:300px; opacity:0.8; transform:rotate(-20deg); z-index:-1; }
+
+@media (max-width:768px){
+  .hero-dec-1{width:350px;right:-50px;bottom:-100px}
+  .hero-dec-2{width:150px;top:0}
+  .garden-dec-1{width:280px;bottom:-100px;left:-60px}
+  .letter-dec-1{width:200px;top:-60px;left:-40px}
+}
+
+
+@media (max-width:520px){.player{width:260px;left:12px;bottom:12px;padding:14px}}
+/* hide Spotify player popup — music plays in background only */
+#player{display:none!important}
+
+/* =================================================
+   15.  REDUCED MOTION
+   ================================================= */
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important;transition:none !important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ambient layers -->
+<div class="bg" aria-hidden="true"></div>
+<div class="twinkles" id="twinkles" aria-hidden="true"></div>
+<div class="petals"   id="petals"   aria-hidden="true"></div>
+
+
+<!-- ================================================
+     SECTION 1 · FLOWER INTRO + PIN GATE
+     ================================================ -->
+<div id="intro" role="dialog" aria-label="Ketuk bunganya untuk memulai">
+  <img src="photos/bunga/1.png" class="floral-dec intro-dec-1 f-float" alt="">
+  <img src="photos/bunga/607704543515304870-removebg-preview.png" class="floral-dec intro-dec-2 f-float-rev" alt="">
+  <div class="burst" id="burst" aria-hidden="true"></div>
+
+  <div class="gift-wrap" id="giftWrap">
+    <button id="gift" class="gift" aria-label="Ketuk bunganya">
+      <img src="ikon.webp" alt="" draggable="false">
+    </button>
+    <div class="gift-hint">ketuk bunganya ✨</div>
+  </div>
+
+  <div class="pin-wrap" id="pinWrap" aria-hidden="true">
+    <div class="pin-title">Tanggal Ulang Tahunmu Sayanggg</div>
+    <div class="pin" id="pinInputs">
+      <input class="pin-cell" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="digit 1">
+      <input class="pin-cell" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="digit 2">
+      <input class="pin-cell" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="digit 3">
+      <input class="pin-cell" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="digit 4">
+      <input class="pin-cell" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="digit 5">
+      <input class="pin-cell" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="digit 6">
+    </div>
+    <div class="pin-foot" id="pinFoot">6 angka — tanggal lahirmu (ddmmyy)</div>
+  </div>
+
+  <!-- ===== SONG PICKER ===== -->
+  <div class="song-picker" id="songPicker" aria-hidden="true">
+    <p class="song-picker-title">pilih lagunya dulu ✨</p>
+    <div class="song-cards">
+
+      <button class="song-card" id="songA"
+        data-ytid="CptnLrdF3_E"
+        data-title="Semua Aku Dirayakan"
+        data-artist="Nadin Amizah"
+        data-cover="audio/Semua Aku Dirayakan.jpg"
+        data-start="93">
+        <div class="song-cover">
+          <img src="audio/Semua Aku Dirayakan.jpg" alt="Semua Aku Dirayakan">
+          <div class="song-cover-play">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="song-meta">
+          <div class="song-name">Semua Aku Dirayakan</div>
+          <div class="song-artist-name">Nadin Amizah</div>
+        </div>
+      </button>
+
+      <button class="song-card" id="songB"
+        data-ytid="78wrful9cVU"
+        data-title="Drop Dead"
+        data-artist="Olivia Rodrigo"
+        data-cover="audio/Drop Dead.png"
+        data-start="0">
+        <div class="song-cover">
+          <img src="audio/Drop Dead.png" alt="Drop Dead">
+          <div class="song-cover-play">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="song-meta">
+          <div class="song-name">Drop Dead</div>
+          <div class="song-artist-name">Olivia Rodrigo</div>
+        </div>
+      </button>
+
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ================================================
+     SECTION 2 · HERO
+     ================================================ -->
+<section id="hero">
+  <img src="photos/bunga/7388786885133791-removebg-preview.png" class="floral-dec hero-dec-1 f-float" alt="">
+  <img src="photos/bunga/23714335532500715-removebg-preview.png" class="floral-dec hero-dec-2 f-float-rev" alt="">
+  <div class="shell" style="position:relative;z-index:2">
+    <p class="eyebrow reveal">a love serenade in bloom</p>
+
+    <!-- EDIT: names / years -->
+    <h1 class="display reveal" data-delay="1">
+      Five Years of Us,<br>
+      <em>Cintaku.</em>
+    </h1>
+
+    <p class="lede reveal" data-delay="2">
+      Hari ini semesta ikut merayakan lima tahun terindah —
+      lima tahun penuh tawa kecil, pelukan yang panjang,
+      dan rumah yang selalu kembali ke kamu.
+    </p>
+
+    <div class="hero-flower reveal" data-delay="3">🌸</div>
+
+    <a class="cta reveal" data-delay="4" href="#letter">
+      discover our journey
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 3 · LETTER CARD
+     ================================================ -->
+<section id="letter">
+  <img src="photos/bunga/5.png" class="floral-dec letter-dec-1 f-float" alt="">
+  <img src="photos/bunga/4855512095047593-removebg-preview.png" class="floral-dec letter-dec-2 f-float-rev" alt="">
+  <div class="shell" style="position:relative;z-index:2">
+    <div class="letter reveal">
+      <div class="row-emoji">🌸 🌹 🌷</div>
+      <p class="eyebrow">from the bottom of my heart</p>
+
+      <!-- EDIT: opening lines -->
+      <h2>
+        Lima tahun yang lalu,<br>
+        <em>dunia menjadi</em><br>
+        lebih indah.
+      </h2>
+
+      <!-- EDIT: love letter -->
+      <p>
+        Hari pertamamu hadir di hidupku, aku tidak tahu
+        bahwa hari-hari biasa bisa terasa seajaib ini.
+        Kamu mengubah pagi menjadi awal, hujan menjadi rumah,
+        dan setiap hal kecil menjadi sesuatu yang ingin
+        kuingat selamanya.
+      </p>
+      <p>
+        Lima tahun bukan jumlah yang sedikit, tapi entah
+        kenapa terasa seperti baru kemarin aku jatuh
+        cinta untuk pertama kalinya. Dan aku tahu —
+        aku akan jatuh cinta lagi setiap hari,
+        ke versi kamu yang berikutnya, dan berikutnya.
+      </p>
+
+      <p class="signoff">— always &amp; forever 🌹</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 4 · TIMELINE
+     ================================================ -->
+<section id="timeline">
+  <img src="photos/bunga/fa12c8969ce37ac5601ae86d37f1e57a-removebg-preview.png" class="floral-dec timeline-dec-1 f-float" alt="">
+  <img src="photos/bunga/2.png" class="floral-dec timeline-dec-2 f-float-rev" alt="">
+  <div class="shell" style="position:relative;z-index:2">
+    <p class="eyebrow reveal">our story in chapters</p>
+    <h2 class="display reveal" data-delay="1">
+      Five Years, <em>Five Promises.</em>
+    </h2>
+    <p class="lede reveal" data-delay="2">
+      setiap foto menyimpan satu tahun yang tak akan pernah kita lupakan.
+    </p>
+
+    <div class="polaroids">
+      <!-- EDIT: years & captions -->
+      <figure class="polaroid reveal" data-delay="1">
+        <div class="photo" data-slot="2022"><img src="photos/berdua/2022.jpg" alt="2022" onerror="this.remove()"></div>
+        <img class="floral" src="photos/1.png" alt="" onerror="this.remove()">
+        <div class="year">2022</div>
+        <div class="cap">where it began</div>
+      </figure>
+      <figure class="polaroid reveal" data-delay="2">
+        <div class="photo" data-slot="2023"><img src="photos/berdua/2023.webp" alt="2023" onerror="this.remove()"></div>
+        <img class="floral" src="photos/2.png" alt="" onerror="this.remove()">
+        <div class="year">2023</div>
+        <div class="cap">first 'i love you'</div>
+      </figure>
+      <figure class="polaroid reveal" data-delay="3">
+        <div class="photo" data-slot="2024"><img src="photos/berdua/2024.jpg" alt="2024" onerror="this.remove()"></div>
+        <img class="floral" src="photos/3.png" alt="" onerror="this.remove()">
+        <div class="year">2024</div>
+        <div class="cap">weathering every storm</div>
+      </figure>
+      <figure class="polaroid reveal" data-delay="4">
+        <div class="photo" data-slot="2025"><img src="photos/berdua/2025.jpg" alt="2025" onerror="this.remove()"></div>
+        <img class="floral" src="photos/4.png" alt="" onerror="this.remove()">
+        <div class="year">2025</div>
+        <div class="cap">growing, choosing, staying</div>
+      </figure>
+      <figure class="polaroid reveal" data-delay="5">
+        <div class="photo" data-slot="2026"><img src="photos/berdua/2026.jpg" alt="2026" onerror="this.remove()"></div>
+        <img class="floral" src="photos/5.png" alt="" onerror="this.remove()">
+        <div class="year">2026</div>
+        <div class="cap">and still, only you</div>
+      </figure>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 5 · WHAT I CHERISH (6 emoji cards)
+     ================================================ -->
+<section id="cherish">
+  <img src="photos/bunga/1407443630228183-removebg-preview.png" class="floral-dec cherish-dec-1 f-float" alt="">
+  <img src="photos/bunga/4.png" class="floral-dec cherish-dec-2 f-float-rev" alt="">
+  <div class="shell" style="position:relative;z-index:2">
+    <p class="eyebrow reveal">five years of loving you</p>
+    <h2 class="display reveal" data-delay="1">
+      What I <em>Cherish</em> About Us
+    </h2>
+
+    <div class="cards">
+      <!-- EDIT: card titles & body -->
+      <article class="card reveal" data-delay="1">
+        <div class="ico ico-photo"><img src="photos/adik/smile.jpeg" alt="" onerror="this.remove()"></div>
+        <h3>Your Smile</h3>
+        <p>Masih sanggup membuat hariku berbeda — bahkan ketika dunia sedang tidak ramah.</p>
+      </article>
+      <article class="card reveal" data-delay="2">
+        <div class="ico ico-photo"><img src="photos/adik/soul.jpeg" alt="" onerror="this.remove()"></div>
+        <h3>Your Soul</h3>
+        <p>Langka, hangat, dan lebih berharga daripada apa pun yang pernah kutemui.</p>
+      </article>
+      <article class="card reveal" data-delay="3">
+        <div class="ico ico-photo"><img src="photos/adik/kindness.jpeg" alt="" onerror="this.remove()"></div>
+        <h3>Your Kindness</h3>
+        <p>Caramu mencintai semua orang membuat dunia ini tempat yang sedikit lebih lembut.</p>
+      </article>
+      <article class="card reveal" data-delay="1">
+        <div class="ico ico-photo"><img src="photos/adik/laught.jpeg" alt="" onerror="this.remove()"></div>
+        <h3>Your Laughter</h3>
+        <p>Suara yang akan kukenali di antara seribu kerumunan — dan akan kukejar setiap kali.</p>
+      </article>
+      <article class="card reveal" data-delay="2">
+        <div class="ico ico-photo"><img src="photos/adik/strenght.jpeg" alt="" onerror="this.remove()"></div>
+        <h3>Your Strength</h3>
+        <p>Kamu berjalan melewati badai dengan begitu anggun, sampai hujan pun belajar untuk lembut.</p>
+      </article>
+      <article class="card reveal" data-delay="3">
+        <div class="ico ico-photo"><img src="photos/adik/simply%20us.jpeg" alt="" onerror="this.remove()"></div>
+        <h3>Simply Us</h3>
+        <p>Setiap versi kita, setiap tahun yang dilewati — masih jadi bagian terbaik dari setiap hari.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 6 · LOVE GARDEN  (5 hover flowers)
+     ================================================ -->
+<section id="garden">
+  <img src="photos/bunga/_aesthetic__wallpaper__wallpaperforyourphone_-removebg-preview.png" class="floral-dec garden-dec-1 f-float" alt="">
+  <img src="photos/bunga/3.png" class="floral-dec garden-dec-2 f-float-rev" alt="">
+  <div class="shell" style="position:relative;z-index:2">
+    <p class="eyebrow reveal">our love garden</p>
+    <h2 class="display reveal" data-delay="1">
+      Five Blooms,<br>
+      <em>One for Each Year.</em>
+    </h2>
+    <p class="lede reveal" data-delay="2">
+      arahkan kursor ke setiap bunga — sebuah memori tersembunyi di dalamnya ✨
+    </p>
+
+    <div class="garden reveal" data-delay="3">
+      <!-- EDIT: per-year memory -->
+      <button class="bloom" aria-label="2022">
+        <div class="tooltip"><b>2022</b>where we met</div>
+        <span class="flower">🌹</span>
+        <span class="stem"></span>
+      </button>
+      <button class="bloom" aria-label="2023">
+        <div class="tooltip"><b>2023</b>first promise</div>
+        <span class="flower">🌸</span>
+        <span class="stem"></span>
+      </button>
+      <button class="bloom" aria-label="2024">
+        <div class="tooltip"><b>2024</b>Believing each other</div>
+        <span class="flower">🌷</span>
+        <span class="stem"></span>
+      </button>
+      <button class="bloom" aria-label="2025">
+        <div class="tooltip"><b>2025</b>the year we grew</div>
+        <span class="flower">🌻</span>
+        <span class="stem"></span>
+      </button>
+      <button class="bloom" aria-label="2026">
+        <div class="tooltip"><b>2026</b>still you, still us</div>
+        <span class="flower">🌼</span>
+        <span class="stem"></span>
+      </button>
+    </div>
+
+    <p class="garden-foot reveal" data-delay="4">a small garden, but every petal is yours.</p>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 7 · PHOTO GRID
+     ================================================ -->
+<section id="memories">
+  <img src="photos/bunga/Decorate_laptops__Hydro_Flasks__cars_and_more_with_-removebg-preview.png" class="floral-dec mem-dec-1 f-float" alt="">
+  <img src="photos/bunga/1.png" class="floral-dec mem-dec-2 f-float-rev" alt="">
+  <div class="shell" style="position:relative;z-index:2">
+    <div class="dashed reveal"><span>captured in time</span></div>
+    <div class="dashed reveal" data-delay="1"><span>cherished forever</span></div>
+    <div class="dashed reveal" data-delay="2"><span>written in us</span></div>
+
+    <h2 class="display reveal" data-delay="3">
+      Our Beautiful<br>
+      <em>Memories.</em>
+    </h2>
+
+    <div class="grid">
+      <!-- all 53 photos from photos/adik -->
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/0.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">love</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/122.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">you</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/2.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">us</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/34.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">always</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/6.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">smile</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/9.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">heart</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/What1sApp%20Image%202026-06-20%20at%2012.18.39%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">forever</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/WhatsAp1p%20Image%202026-06-20%20at%2012.18.39%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">together</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/WhatsAp4p%20Image%202026-06-20%20at%2012.18.39%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">bloom</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/WhatsApp%202Image%202026-06-20%20at%2012.18.39%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">shine</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/WhatsApp%20I2mage%202026-06-20%20at%2012.18.38%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">joy</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/WhatsApp%20I2mage%202026-06-20%20at%2012.18.39%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">grace</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Im7age%202026-06-20%20at%2012.18.39%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">warm</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Ima3ge%202026-06-20%20at%2012.18.39%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">sweet</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%2012026-06-20%20at%2012.18.38%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">dream</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%2020226-06-19%20at%2010.23.56%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">wish</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%2020226-06-20%20at%2012.18.38%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">hope</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.128.36%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">glow</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.18.28%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">rise</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.18.325%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">care</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.18.33%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">trust</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.18.34%201PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">laugh</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.18.34%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">dance</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.18.35%202PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">song</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.18.35%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">star</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.18.36%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">moon</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.182.36%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">sun</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.23.50%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">sky</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.23.52%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">light</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.23.55%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">home</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.23.56%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">soul</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%2010.232.52%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">still</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-19%20at%20120.18.36%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">now</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-192%20at%2010.23.54%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">here</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-20%20at%2012.18.34%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">stay</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-20%20at%2012.18.38%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">hold</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-203%20at%2012.18.39%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">feel</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-219%20at%2010.23.54%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">know</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-219%20at%2010.23.55%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">live</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-06-420%20at%2012.18.38%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">give</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-061-20%20at%2012.18.38%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">be</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-062-19%20at%2010.23.52%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">mine</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-062-19%20at%2010.23.53%20PM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">yours</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-106-20%20at%2012.18.39%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">close</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%202026-606-20%20at%2012.18.39%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">safe</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/WhatsApp%20Image%2028026-06-20%20at%2012.18.39%20AM.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">calm</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/i.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">dear</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/kindness.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">soft</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/laught.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">real</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="2">
+        <div class="photo"><img src="photos/adik/simply%20us.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">free</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="3">
+        <div class="photo"><img src="photos/adik/smile.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">true</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="4">
+        <div class="photo"><img src="photos/adik/soul.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">yes</figcaption>
+      </figure>
+      <figure class="tile reveal" data-delay="1">
+        <div class="photo"><img src="photos/adik/strenght.jpeg" alt="" onerror="this.remove()"></div>
+        <figcaption class="label">us</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================
+     SECTION 8 · CLOSING
+     ================================================ -->
+<section id="closing">
+  <img src="photos/bunga/2885187255888874-removebg-preview.png" class="floral-dec closing-dec-1 f-float" alt="">
+  <div class="shell closing">
+    <div class="row-emoji reveal" style="font-size:24px;letter-spacing:.5em;margin-bottom:18px">
+      🌸 🌹 🌷 🌼 🌻
+    </div>
+    <p class="eyebrow reveal" data-delay="1">happy fifth anniversary, my love 🤍</p>
+
+    <h2 class="display reveal" data-delay="2">
+      You Are Loved<br>
+      <em>More Than You Know.</em>
+    </h2>
+
+    <p class="lede reveal" data-delay="3">
+      Di hari yang sepenuhnya milik kita ini — lima tahun berlalu,
+      tapi setiap kali memandangmu rasanya masih seperti pertama kali.
+      Mencintaimu adalah petualangan terbesar dalam hidupku.
+      Setiap tahun bersamamu adalah hadiah yang tak akan
+      pernah kuhitung remeh — setiap tawa, setiap detak yang
+      mengiringi detakmu.
+    </p>
+    <p class="lede reveal" data-delay="4" style="margin-top:18px">
+      Untuk lima tahun ke depan, dan lima setelahnya, dan setiap
+      lima tahun yang akan kita habiskan mengubah hari biasa
+      menjadi <em style="color:var(--rose);font-family:var(--serif);font-style:italic">kita</em>.
+    </p>
+
+    <div class="heart reveal" data-delay="4">💖</div>
+    <p class="signature reveal" data-delay="5">made with endless love, just for you 🌸</p>
+  </div>
+</section>
+
+
+<!-- ================================================
+     MUSIC WIDGET — Spotify embed
+     ================================================ -->
+<button class="music-toggle" id="musicToggle" aria-label="Toggle music">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zm12-2a3 3 0 11-6 0 3 3 0 016 0z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<div class="player" id="player" role="region" aria-label="Music player">
+  <button class="close" id="playerClose" aria-label="Close player">×</button>
+
+  <div class="cover"><img id="playerCover" src="audio/Semua Aku Dirayakan.jpg" alt="" onerror="this.remove()"></div>
+
+  <div class="meta">
+    <div class="title">
+      <span id="playerTitle">Semua Aku Dirayakan</span>
+      <span class="eq" aria-hidden="true"><span></span><span></span><span></span></span>
+    </div>
+    <div class="artist" id="playerArtist">Nadin Amizah</div>
+  </div>
+
+  <!-- hidden YouTube player -->
+  <div id="ytPlayerWrap" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;">
+    <div id="ytPlayer"></div>
+  </div>
+</div>
+
+
+<script>
+/* ===================================================
+   CONFIG
+   =================================================== */
+/* EDIT:  detik di mp3 kamu dimana lagu mulai diputar saat
+   gift box di-tap. Buka file audio/song.mp3 di player apa pun,
+   cari momen yang kamu mau, lalu ganti angka di bawah ini.   */
+/* (audio playback is handled by Spotify embed; no start-time config needed) */
+
+/* EDIT:  6 angka tanggal lahir untuk membuka gate.
+   Format default ddmmyy — ganti sesuai yang kamu mau.   */
+const BIRTHDAY_PIN   = '060104';    // 06 Januari 2004
+
+/* shared between the intro song-picker and the music widget */
+let currentStartSec = 0;
+let ytPlayer = null;
+let ytReady  = false;
+
+/* ===================================================
+   AMBIENT — petals + twinkles
+   =================================================== */
+(function ambient(){
+  const petals = document.getElementById('petals');
+  const palette = ['🌸','🌹','🌷','🌼','🌺','🌻'];
+  for(let i=0;i<22;i++){
+    const s = document.createElement('span');
+    s.textContent = palette[i % palette.length];
+    s.style.left   = Math.random()*100 + 'vw';
+    s.style.fontSize = (12 + Math.random()*18) + 'px';
+    s.style.animationDuration = (10 + Math.random()*14) + 's';
+    s.style.animationDelay    = (-Math.random()*20) + 's';
+    s.style.opacity = (.6 + Math.random()*.4);
+    petals.appendChild(s);
+  }
+  const tw = document.getElementById('twinkles');
+  for(let i=0;i<60;i++){
+    const t = document.createElement('i');
+    t.style.left = Math.random()*100 + 'vw';
+    t.style.top  = Math.random()*100 + 'vh';
+    t.style.animationDelay = (Math.random()*4) + 's';
+    t.style.transform = `scale(${.5 + Math.random()*1.2})`;
+    tw.appendChild(t);
+  }
+})();
+
+/* ===================================================
+   INTRO  ·  flower tap → music starts + PIN gate → flower-fill unlock
+   =================================================== */
+(function intro(){
+  const intro      = document.getElementById('intro');
+  const gift       = document.getElementById('gift');
+  const giftWrap   = document.getElementById('giftWrap');
+  const burst      = document.getElementById('burst');
+  const songPicker = document.getElementById('songPicker');
+  const pinWrap    = document.getElementById('pinWrap');
+  const pinFoot    = document.getElementById('pinFoot');
+  const cells      = Array.from(document.querySelectorAll('.pin-cell'));
+  const pinRow     = document.getElementById('pinInputs');
+  const flowers    = ['🌸','🌹','🌷','🌼','🌻','🌺','💖','✨','🌺'];
+
+  let tapped     = false;
+  let songChosen = false;
+
+  /* ---------- small burst around the flower icon ---------- */
+  function smallBurst(){
+    for(let i=0;i<24;i++){
+      const s = document.createElement('span');
+      s.textContent = flowers[i % flowers.length];
+      const angle = (Math.PI*2) * (i/24);
+      const dist  = 160 + Math.random()*120;
+      s.style.setProperty('--x', Math.cos(angle)*dist + 'px');
+      s.style.setProperty('--y', Math.sin(angle)*dist + 'px');
+      s.style.setProperty('--r', (Math.random()*720-360) + 'deg');
+      s.style.animationDelay = (Math.random()*.15) + 's';
+      burst.appendChild(s);
+    }
+    burst.classList.add('go');
+  }
+
+  /* ---------- YouTube IFrame API setup ---------- */
+  // ytPlayer + ytReady live in the outer scope so the music widget IIFE can read them
+  let pendingPlay = null; // {ytid, startSec}
+
+  // Load YouTube IFrame API
+  const ytScript = document.createElement('script');
+  ytScript.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(ytScript);
+
+  // Called by YouTube API when ready
+  window.onYouTubeIframeAPIReady = function(){
+    ytPlayer = new YT.Player('ytPlayer', {
+      height: '1',
+      width: '1',
+      playerVars: {
+        autoplay: 0,
+        controls: 0,
+        disablekb: 1,
+        fs: 0,
+        modestbranding: 1,
+        origin: window.location.origin
+      },
+      events: {
+        onReady: function(){
+          ytReady = true;
+          if(pendingPlay){
+            playSong(pendingPlay.ytid, pendingPlay.startSec);
+            pendingPlay = null;
+          }
+        },
+        onStateChange: function(e){
+          const toggle = document.getElementById('musicToggle');
+          const player = document.getElementById('player');
+          if(e.data === YT.PlayerState.PLAYING){
+            toggle.classList.add('playing');
+            player.classList.add('playing');
+          } else if(e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED){
+            toggle.classList.remove('playing');
+            player.classList.remove('playing');
+            // loop: when ended, seek back to start
+            if(e.data === YT.PlayerState.ENDED){
+              setTimeout(()=>{ ytPlayer.seekTo(currentStartSec, true); ytPlayer.playVideo(); }, 300);
+            }
+          }
+        }
+      }
+    });
+  };
+
+  function playSong(ytid, startSec){
+    if(!ytPlayer || !ytReady){ pendingPlay = {ytid, startSec}; return; }
+    currentStartSec = startSec || 0;
+    ytPlayer.loadVideoById({ videoId: ytid, startSeconds: currentStartSec });
+    ytPlayer.unMute();
+    ytPlayer.setVolume(100);
+    document.getElementById('musicToggle').classList.add('playing');
+    document.getElementById('player').classList.add('open');
+  }
+
+  /* ---------- start the chosen song (now via YouTube) ---------- */
+  function startSong(ytid, startSec){
+    playSong(ytid, startSec);
+  }
+
+  /* ---------- first tap on the flower → show song picker ---------- */
+  function firstTap(){
+    if(tapped || intro.classList.contains('gone')) return;
+    tapped = true;
+    smallBurst();
+
+    // fade flower out, show song picker
+    giftWrap.classList.add('away');
+    setTimeout(()=>{
+      songPicker.classList.add('show');
+      songPicker.setAttribute('aria-hidden','false');
+    }, 450);
+  }
+  gift.addEventListener('click', firstTap);
+  gift.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); firstTap(); } });
+
+  /* ---------- song selection (starts chosen mp3 immediately) ---------- */
+  document.querySelectorAll('.song-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      if(songChosen) return;
+      songChosen = true;
+
+      const title  = card.dataset.title;
+      const artist = card.dataset.artist;
+      const cover  = card.dataset.cover;
+
+      // highlight chosen card
+      card.classList.add('chosen');
+
+      // update widget metadata
+      const titleEl  = document.getElementById('playerTitle');
+      const artistEl = document.getElementById('playerArtist');
+      const coverImg = document.getElementById('playerCover');
+      if(titleEl)  titleEl.textContent  = title;
+      if(artistEl) artistEl.textContent = artist;
+      if(coverImg) coverImg.src         = cover;
+
+      // Call startSong IMMEDIATELY inside the click handler to bypass mobile autoplay restrictions
+      const ytid  = card.dataset.ytid;
+      const start = parseInt(card.dataset.start, 10);
+      startSong(ytid, isNaN(start) ? 0 : start);
+
+      // brief chosen-card animation, then show PIN
+      setTimeout(()=>{
+        songPicker.classList.remove('show');
+        songPicker.setAttribute('aria-hidden','true');
+        setTimeout(()=>{
+          pinWrap.classList.add('show');
+          pinWrap.setAttribute('aria-hidden','false');
+          cells[0].focus();
+        }, 400);
+      }, 520);
+    });
+  });
+
+  /* ---------- PIN input flow ---------- */
+  function readPin(){
+    return cells.map(c=>c.value).join('');
+  }
+  function clearPin(){
+    cells.forEach(c=>{ c.value=''; c.classList.remove('filled'); });
+    cells[0].focus();
+  }
+
+  cells.forEach((c, i)=>{
+    c.addEventListener('input', ()=>{
+      // strip non-digits
+      c.value = c.value.replace(/\D/g,'').slice(0,1);
+      if(c.value){
+        c.classList.add('filled');
+        if(i < cells.length - 1) cells[i+1].focus();
+      } else {
+        c.classList.remove('filled');
+      }
+      // check on full
+      if(readPin().length === cells.length) tryUnlock();
+    });
+    c.addEventListener('keydown', e=>{
+      if(e.key === 'Backspace' && !c.value && i > 0){
+        cells[i-1].focus();
+        cells[i-1].value = '';
+        cells[i-1].classList.remove('filled');
+        e.preventDefault();
+      }
+      if(e.key === 'ArrowLeft' && i > 0) cells[i-1].focus();
+      if(e.key === 'ArrowRight' && i < cells.length - 1) cells[i+1].focus();
+    });
+    c.addEventListener('paste', e=>{
+      const text = (e.clipboardData || window.clipboardData).getData('text');
+      const digits = text.replace(/\D/g,'').slice(0,6);
+      if(!digits) return;
+      e.preventDefault();
+      digits.split('').forEach((d, k)=>{
+        if(cells[k]){ cells[k].value = d; cells[k].classList.add('filled'); }
+      });
+      const next = Math.min(digits.length, cells.length - 1);
+      cells[next].focus();
+      if(readPin().length === cells.length) tryUnlock();
+    });
+  });
+
+  function tryUnlock(){
+    if(readPin() === BIRTHDAY_PIN){
+      unlock();
+    } else {
+      pinRow.classList.add('wrong');
+      pinFoot.textContent = 'masih salah, coba lagi sayang';
+      pinFoot.classList.add('err');
+      setTimeout(()=>{
+        pinRow.classList.remove('wrong');
+        clearPin();
+      }, 600);
+    }
+  }
+
+  /* ---------- correct PIN: fullscreen flower fill → dismiss intro ---------- */
+  function unlock(){
+    pinFoot.textContent = 'selamat datang ✨';
+    pinFoot.classList.remove('err');
+
+    const fill = document.createElement('div');
+    fill.className = 'fill';
+    intro.appendChild(fill);
+
+    // grid-ish scatter so flowers cover the whole viewport
+    const N = 56;
+    for(let i=0;i<N;i++){
+      const s = document.createElement('span');
+      s.textContent = flowers[i % flowers.length];
+      s.style.left = (Math.random()*100) + 'vw';
+      s.style.top  = (Math.random()*100) + 'vh';
+      s.style.animationDelay = (Math.random()*.55) + 's';
+      fill.appendChild(s);
+    }
+
+    setTimeout(()=>{
+      intro.classList.add('gone');
+      document.body.style.overflow='';
+      revealScan();
+    }, 1500);
+  }
+
+  /* ---------- block scroll while the intro is up ---------- */
+  document.body.style.overflow='hidden';
+
+  /* ---------- preview helpers (?skip, ?to=section, ?player) ---------- */
+  if(location.search.includes('skip')){
+    intro.classList.add('gone');
+    document.body.style.overflow='';
+    document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+    const m = location.search.match(/to=(\w+)/);
+    if(m){
+      const want = m[1];
+      document.querySelectorAll('section').forEach(s=>{
+        if(s.id !== want) s.style.display='none';
+      });
+    }
+    if(location.search.includes('player')){
+      const p = document.getElementById('player');
+      if(p) p.classList.add('open');
+    }
+  }
+  if(location.search.includes('pin')){
+    // jump straight to the PIN modal for preview
+    giftWrap.classList.add('away');
+    pinWrap.classList.add('show');
+    pinWrap.setAttribute('aria-hidden','false');
+  }
+})();
+
+/* ===================================================
+   SCROLL REVEAL — IntersectionObserver
+   =================================================== */
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+}, {threshold:.18, rootMargin:'0px 0px -8% 0px'});
+
+function revealScan(){
+  document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
+}
+revealScan();
+
+/* ===================================================
+   MUSIC — widget toggle + audio event sync
+   =================================================== */
+(function music(){
+  const toggle = document.getElementById('musicToggle');
+  const player = document.getElementById('player');
+  const close  = document.getElementById('playerClose');
+
+  toggle.addEventListener('click', ()=>{
+    if(!ytPlayer){ player.classList.toggle('open'); return; }
+    const state = ytPlayer.getPlayerState ? ytPlayer.getPlayerState() : -1;
+    if(state === 1){ // playing → pause
+      ytPlayer.pauseVideo();
+    } else { // paused/stopped → play
+      ytPlayer.playVideo();
+    }
+    player.classList.add('open');
+  });
+  close.addEventListener('click', ()=> player.classList.remove('open'));
+})();
+</script>
+
+</body>
+</html>
