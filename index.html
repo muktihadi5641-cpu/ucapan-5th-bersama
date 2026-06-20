@@ -2972,11 +2972,20 @@
         burst.classList.add('go');
       }
 
-      /* ---------- YouTube IFrame API setup ---------- */
-      // ytPlayer + ytReady live in the outer scope so the music widget IIFE can read them
-      let pendingPlay = null; // {ytid, startSec}
-
       /* ---------- HTML5 Audio player — bebas iklan, langsung play ---------- */
+      function fadeInAudio(audio, durationMs) {
+        const steps = 40;
+        const stepMs = durationMs / steps;
+        const stepVol = 1 / steps;
+        let vol = 0;
+        audio.volume = 0;
+        const timer = setInterval(() => {
+          vol = Math.min(1, vol + stepVol);
+          audio.volume = vol;
+          if (vol >= 1) clearInterval(timer);
+        }, stepMs);
+      }
+
       function playSong(src, startSec) {
         currentStartSec = startSec || 0;
 
@@ -2987,7 +2996,8 @@
         document.getElementById('musicToggle').classList.add('playing');
         document.getElementById('player').classList.add('open');
 
-        // Load file MP3 lokal dan mulai dari startSec
+        // Load file MP3 lokal, mulai dari 0 volume untuk fade-in
+        audio.volume = 0;
         audio.src = src;
         audio.currentTime = currentStartSec;
 
@@ -3000,9 +3010,10 @@
         const p = audio.play();
         if (p !== undefined) {
           p.then(() => {
-            // Berhasil play — sembunyikan hint
+            // Berhasil play — fade in volume 1.5 detik
             const hint = document.getElementById('ytHint');
             if (hint) hint.style.display = 'none';
+            fadeInAudio(audio, 1500);
           }).catch(() => {
             // Autoplay diblokir browser — tampilkan tombol tap-to-play
             const hint = document.getElementById('ytHint');
