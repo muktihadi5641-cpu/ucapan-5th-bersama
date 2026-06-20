@@ -217,7 +217,7 @@
       }
     }
 
-    /* floating memories — slow upward drift of past photos behind everything */
+    /* floating memories — slow upward drift of polaroid-framed past photos */
     #floating-bg {
       position: fixed;
       inset: 0;
@@ -226,29 +226,38 @@
       overflow: hidden;
     }
 
-    #floating-bg img {
+    #floating-bg .float-frame {
       position: absolute;
-      bottom: -45vh;
-      width: clamp(110px, 16vw, 200px);
-      aspect-ratio: 3 / 4;
-      object-fit: cover;
-      border-radius: 14px;
+      bottom: -50vh;
+      width: clamp(105px, 13vw, 160px);
+      background: #f6e7dd;
+      padding: 8px 8px 22px;
+      border-radius: 3px;
+      box-shadow: 0 14px 36px -8px rgba(0, 0, 0, .55), 0 0 0 1px rgba(0, 0, 0, .04) inset;
       opacity: 0;
-      filter: blur(.4px) saturate(.85) contrast(.95);
-      box-shadow: 0 10px 32px rgba(0, 0, 0, .35);
       will-change: transform, opacity;
       animation: drift-up linear infinite;
     }
 
+    #floating-bg .float-frame img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+    }
+
     @keyframes drift-up {
       0%   { transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg));      opacity: 0; }
-      8%   { opacity: var(--peak, .15); }
-      88%  { opacity: var(--peak, .15); }
-      100% { transform: translate3d(0, -160vh, 0) rotate(var(--rot, 0deg)); opacity: 0; }
+      8%   { opacity: var(--peak, .22); }
+      88%  { opacity: var(--peak, .22); }
+      100% { transform: translate3d(0, -170vh, 0) rotate(var(--rot, 0deg)); opacity: 0; }
     }
 
     @media (max-width: 640px) {
-      #floating-bg img { width: clamp(80px, 26vw, 130px); }
+      #floating-bg .float-frame {
+        width: clamp(74px, 20vw, 100px);
+        padding: 6px 6px 16px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -3396,7 +3405,7 @@
       }
     })();
 
-    /* floating memories — inject ~18 drifting photos behind everything */
+    /* floating memories — polaroid frames drifting up in non-overlapping lanes */
     (function initFloatingBg() {
       const layer = document.getElementById('floating-bg');
       if (!layer) return;
@@ -3415,30 +3424,52 @@
         'photos/adik/34.jpeg',
         'photos/adik/122.jpeg',
       ];
-      const COUNT = window.innerWidth < 640 ? 12 : 18;
+
+      const isMobile = window.innerWidth < 640;
+      const LANES = isMobile ? 4 : 7;          // horizontal columns — no overlap between lanes
+      const WAVES = 2;                          // photos per lane, staggered to half-period
+      const BASE_DUR = isMobile ? 55 : 60;     // seconds for one trip
       const rand = (a, b) => a + Math.random() * (b - a);
 
-      // shuffle pool so we don't always pick same first
-      const order = POOL.slice().sort(() => Math.random() - 0.5);
+      // shuffle pool so first-paint isn't always the same year
+      const shuffled = POOL.slice().sort(() => Math.random() - 0.5);
+      let idx = 0;
 
-      for (let i = 0; i < COUNT; i++) {
-        const img = document.createElement('img');
-        img.src = order[i % order.length];
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        img.alt = '';
-        const dur   = rand(38, 70).toFixed(1);
-        const delay = (-rand(0, parseFloat(dur))).toFixed(1);  // negative offset → no blank initial wait
-        const left  = rand(2, 92).toFixed(1);
-        const peak  = rand(0.10, 0.18).toFixed(2);
-        const rot   = rand(-8, 8).toFixed(1);
-        img.style.left = left + 'vw';
-        img.style.animationDuration = dur + 's';
-        img.style.animationDelay = delay + 's';
-        img.style.setProperty('--peak', peak);
-        img.style.setProperty('--rot', rot + 'deg');
-        img.onerror = () => img.remove();
-        layer.appendChild(img);
+      const sideMargin = 3;                                  // % from edges
+      const usable = 100 - sideMargin * 2;
+      const laneSpan = usable / LANES;
+
+      for (let lane = 0; lane < LANES; lane++) {
+        const center = sideMargin + laneSpan * lane + laneSpan / 2;
+        const dur = BASE_DUR + rand(-6, 10);                 // 54-70s per lane
+        for (let wave = 0; wave < WAVES; wave++) {
+          const frame = document.createElement('div');
+          frame.className = 'float-frame';
+
+          const img = document.createElement('img');
+          img.src = shuffled[idx++ % shuffled.length];
+          img.loading = 'lazy';
+          img.decoding = 'async';
+          img.alt = '';
+          img.onerror = () => frame.remove();
+          frame.appendChild(img);
+
+          const jitter = rand(-laneSpan * 0.18, laneSpan * 0.18);
+          const left = Math.max(0.5, Math.min(99, center + jitter));
+          // stagger waves: wave 0 starts mid-cycle, wave 1 starts at top — so they
+          // are never on screen at the same vertical position within a lane
+          const phase = (wave / WAVES) * dur + rand(0, 3);
+          const peak = rand(0.16, 0.26);
+          const rot  = rand(-6, 6);
+
+          frame.style.left = left + 'vw';
+          frame.style.animationDuration = dur.toFixed(1) + 's';
+          frame.style.animationDelay = (-phase).toFixed(1) + 's';
+          frame.style.setProperty('--peak', peak.toFixed(2));
+          frame.style.setProperty('--rot', rot.toFixed(1) + 'deg');
+
+          layer.appendChild(frame);
+        }
       }
     })();
   </script>
