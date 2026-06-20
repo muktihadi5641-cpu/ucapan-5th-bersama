@@ -19,12 +19,6 @@ WhatsApp Video*.mp4
 Thumbs.db
 .vscode/
 
-# Raw WhatsApp dumps inside photos/ (replaced by named files)
-photos/adik/WhatsApp Image*.jpeg
-photos/adik/WhatsApp 2Image*.jpeg
-photos/adik/2.jpeg
-photos/berdua/WhatsApp Image*.jpeg
-
 # Raw HEIC originals (already converted to .jpg)
 photos/berdua/*.HEIC
 photos/berdua/2026(1).jpeg

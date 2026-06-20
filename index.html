@@ -1111,58 +1111,61 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 }
 
 /* =================================================
-   14.5  FLOATING FLOWER DECORATIONS
+   14.5  FLOATING FLOWER DECORATIONS — fixed layer
    ================================================= */
-.floral-dec { position:absolute; z-index:0; pointer-events:none; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)); opacity:0.85; }
-.f-float { animation: f-float 8s ease-in-out infinite alternate; }
+/* All flower decorations live in a fixed overlay so they
+   never get clipped by section boundaries */
+#flower-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+.floral-dec {
+  position: absolute;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.35));
+}
+.f-float     { animation: f-float     8s ease-in-out infinite alternate; }
 .f-float-rev { animation: f-float-rev 10s ease-in-out infinite alternate; }
-@keyframes f-float { 0% { transform:translateY(0) rotate(0); } 100% { transform:translateY(-20px) rotate(4deg); } }
-@keyframes f-float-rev { 0% { transform:translateY(0) rotate(0); } 100% { transform:translateY(-15px) rotate(-4deg); } }
+@keyframes f-float     { 0%{transform:translateY(0) rotate(0)} 100%{transform:translateY(-20px) rotate(4deg)} }
+@keyframes f-float-rev { 0%{transform:translateY(0) rotate(0)} 100%{transform:translateY(-15px) rotate(-4deg)} }
 
-/* Hero */
-#hero { position:relative; z-index:1; }
-.hero-dec-1 { bottom:-150px; right:-120px; width:550px; opacity:0.95; z-index:0; }
-.hero-dec-2 { top:-20px; left:-80px; width:220px; opacity:0.8; transform:rotate(15deg); }
+/* Positions — expressed as % of viewport so they sit correctly on screen */
+/* These shift via JS scroll offset to follow their section */
+.fd-hero-r   { bottom:5vh;  right:-8vw;  width:min(420px,45vw); opacity:0.9; }
+.fd-hero-l   { top:10vh;    left:-4vw;   width:min(180px,20vw); opacity:0.75; transform:rotate(15deg); }
+.fd-letter-l { top:12vh;    left:-6vw;   width:min(300px,30vw); opacity:0.85; transform:rotate(-8deg); }
+.fd-letter-r { bottom:8vh;  right:-3vw;  width:min(160px,16vw); opacity:0.7;  transform:rotate(18deg); }
+.fd-tl-r     { top:35vh;    right:-5vw;  width:min(220px,22vw); opacity:0.55; transform:rotate(12deg); }
+.fd-tl-l     { bottom:20vh; left:-4vw;   width:min(160px,16vw); opacity:0.65; transform:rotate(-18deg); }
+.fd-ch-r     { top:8vh;     right:-6vw;  width:min(280px,28vw); opacity:0.45; transform:rotate(8deg); }
+.fd-ch-l     { bottom:25vh; left:-5vw;   width:min(180px,18vw); opacity:0.55; }
+.fd-gd-l     { bottom:5vh;  left:-8vw;   width:min(380px,38vw); opacity:0.85; transform:rotate(-12deg); }
+.fd-gd-r     { top:15vh;    right:-3vw;  width:min(180px,18vw); opacity:0.65; transform:rotate(22deg); }
+.fd-mem-r    { top:10vh;    right:-5vw;  width:min(220px,22vw); opacity:0.5; }
+.fd-mem-l    { bottom:8vh;  left:-5vw;   width:min(250px,25vw); opacity:0.7;  transform:rotate(-14deg); }
+.fd-cl-r     { bottom:8vh;  right:-4vw;  width:min(300px,30vw); opacity:0.85; transform:rotate(-4deg); }
 
-/* Letter */
-#letter { position:relative; z-index:1; }
-.letter-dec-1 { top:-110px; left:-80px; width:350px; opacity:0.85; transform:rotate(-10deg); z-index:0; }
-.letter-dec-2 { bottom:-30px; right:-40px; width:200px; opacity:0.7; transform:rotate(20deg); }
+/* Intro overlay flowers */
+.fd-intro-r  { top:-4vh;   right:-4vw;  width:min(260px,26vw); opacity:0.8;  transform:rotate(12deg); z-index:0; }
+.fd-intro-l  { bottom:-5vh; left:-5vw;  width:min(280px,28vw); opacity:0.8;  transform:rotate(-18deg); z-index:0; }
 
-/* Timeline */
+#hero     { position:relative; z-index:1; }
+#letter   { position:relative; z-index:1; }
 #timeline { position:relative; z-index:1; }
-.timeline-dec-1 { top:25%; right:-60px; width:260px; opacity:0.6; transform:rotate(15deg); }
-.timeline-dec-2 { bottom:15%; left:-50px; width:180px; opacity:0.7; transform:rotate(-20deg); }
-
-/* Cherish */
-#cherish { position:relative; z-index:1; }
-.cherish-dec-1 { top:-60px; right:-70px; width:350px; opacity:0.5; z-index:0; transform:rotate(10deg); }
-.cherish-dec-2 { bottom:20%; left:-50px; width:220px; opacity:0.6; }
-
-/* Garden */
-#garden { position:relative; z-index:1; }
-.garden-dec-1 { bottom:-150px; left:-120px; width:450px; opacity:0.9; transform:rotate(-15deg); }
-.garden-dec-2 { top:10%; right:-40px; width:200px; opacity:0.7; transform:rotate(25deg); }
-
-/* Memories Grid Accent */
+#cherish  { position:relative; z-index:1; }
+#garden   { position:relative; z-index:1; }
 #memories { position:relative; z-index:1; }
-.mem-dec-1 { top:5%; right:-60px; width:250px; opacity:0.6; }
-.mem-dec-2 { bottom:10%; left:-60px; width:280px; opacity:0.8; transform:rotate(-15deg); }
-
-/* Closing */
-#closing { position:relative; z-index:1; overflow:hidden; }
-.closing-dec-1 { bottom:-60px; right:-50px; width:350px; opacity:0.9; transform:rotate(-5deg); z-index:0; }
-
-/* Intro (Cover) */
-#intro { position:fixed; z-index:9999; }
-.intro-dec-1 { top:-50px; right:-50px; width:280px; opacity:0.8; transform:rotate(15deg); z-index:-1; }
-.intro-dec-2 { bottom:-60px; left:-60px; width:300px; opacity:0.8; transform:rotate(-20deg); z-index:-1; }
+#closing  { position:relative; z-index:1; }
+#intro    { position:fixed;    z-index:9999; }
 
 @media (max-width:768px){
-  .hero-dec-1{width:350px;right:-50px;bottom:-100px}
-  .hero-dec-2{width:150px;top:0}
-  .garden-dec-1{width:280px;bottom:-100px;left:-60px}
-  .letter-dec-1{width:200px;top:-60px;left:-40px}
+  .fd-hero-r  {width:min(260px,55vw);right:-4vw}
+  .fd-hero-l  {width:min(120px,20vw)}
+  .fd-letter-l{width:min(180px,36vw)}
+  .fd-gd-l    {width:min(220px,45vw)}
 }
 
 
@@ -1186,6 +1189,34 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 <div class="bg" aria-hidden="true"></div>
 <div class="twinkles" id="twinkles" aria-hidden="true"></div>
 <div class="petals"   id="petals"   aria-hidden="true"></div>
+
+<!-- ================================================
+     GLOBAL FLOWER DECORATION LAYER
+     (fixed overlay — never clipped by section boundaries)
+     ================================================ -->
+<div id="flower-layer" aria-hidden="true">
+  <!-- Hero flowers -->
+  <img src="photos/bunga/7388786885133791-removebg-preview.png"  class="floral-dec fd-hero-r  f-float"     data-section="hero"     alt="">
+  <img src="photos/bunga/23714335532500715-removebg-preview.png" class="floral-dec fd-hero-l  f-float-rev" data-section="hero"     alt="">
+  <!-- Letter flowers -->
+  <img src="photos/bunga/5.png"                                   class="floral-dec fd-letter-l f-float"    data-section="letter"   alt="">
+  <img src="photos/bunga/4855512095047593-removebg-preview.png"   class="floral-dec fd-letter-r f-float-rev" data-section="letter" alt="">
+  <!-- Timeline flowers -->
+  <img src="photos/bunga/fa12c8969ce37ac5601ae86d37f1e57a-removebg-preview.png" class="floral-dec fd-tl-r f-float"     data-section="timeline" alt="">
+  <img src="photos/bunga/2.png"                                   class="floral-dec fd-tl-l   f-float-rev" data-section="timeline" alt="">
+  <!-- Cherish flowers -->
+  <img src="photos/bunga/1407443630228183-removebg-preview.png"   class="floral-dec fd-ch-r   f-float"     data-section="cherish"  alt="">
+  <img src="photos/bunga/4.png"                                    class="floral-dec fd-ch-l   f-float-rev" data-section="cherish"  alt="">
+  <!-- Garden flowers -->
+  <img src="photos/bunga/607704543515304870-removebg-preview.png" class="floral-dec fd-gd-l   f-float"     data-section="garden"   alt="">
+  <img src="photos/bunga/3.png"                                    class="floral-dec fd-gd-r   f-float-rev" data-section="garden"  alt="">
+  <!-- Memories flowers -->
+  <img src="photos/bunga/Decorate_laptops__Hydro_Flasks__cars_and_more_with_-removebg-preview.png" class="floral-dec fd-mem-r f-float" data-section="memories" alt="">
+  <img src="photos/bunga/1.png"                                    class="floral-dec fd-mem-l  f-float-rev" data-section="memories" alt="">
+  <!-- Closing flowers -->
+  <img src="photos/bunga/2885187255888874-removebg-preview.png"   class="floral-dec fd-cl-r   f-float"     data-section="closing"  alt="">
+</div>
+
 
 
 <!-- ================================================
@@ -1272,10 +1303,7 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 <!-- ================================================
      SECTION 2 · HERO
      ================================================ -->
-<section id="hero">
-  <img src="photos/bunga/7388786885133791-removebg-preview.png" class="floral-dec hero-dec-1 f-float" alt="">
-  <img src="photos/bunga/23714335532500715-removebg-preview.png" class="floral-dec hero-dec-2 f-float-rev" alt="">
-  <div class="shell" style="position:relative;z-index:2">
+<section id="hero">  <div class="shell" style="position:relative;z-index:2">
     <p class="eyebrow reveal">a love serenade in bloom</p>
 
     <!-- EDIT: names / years -->
@@ -1305,10 +1333,7 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 <!-- ================================================
      SECTION 3 · LETTER CARD
      ================================================ -->
-<section id="letter">
-  <img src="photos/bunga/5.png" class="floral-dec letter-dec-1 f-float" alt="">
-  <img src="photos/bunga/4855512095047593-removebg-preview.png" class="floral-dec letter-dec-2 f-float-rev" alt="">
-  <div class="shell" style="position:relative;z-index:2">
+<section id="letter">  <div class="shell" style="position:relative;z-index:2">
     <div class="letter reveal">
       <div class="row-emoji">🌸 🌹 🌷</div>
       <p class="eyebrow">from the bottom of my heart</p>
@@ -1345,10 +1370,7 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 <!-- ================================================
      SECTION 4 · TIMELINE
      ================================================ -->
-<section id="timeline">
-  <img src="photos/bunga/fa12c8969ce37ac5601ae86d37f1e57a-removebg-preview.png" class="floral-dec timeline-dec-1 f-float" alt="">
-  <img src="photos/bunga/2.png" class="floral-dec timeline-dec-2 f-float-rev" alt="">
-  <div class="shell" style="position:relative;z-index:2">
+<section id="timeline">  <div class="shell" style="position:relative;z-index:2">
     <p class="eyebrow reveal">our story in chapters</p>
     <h2 class="display reveal" data-delay="1">
       Five Years, <em>Five Promises.</em>
@@ -1397,10 +1419,7 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 <!-- ================================================
      SECTION 5 · WHAT I CHERISH (6 emoji cards)
      ================================================ -->
-<section id="cherish">
-  <img src="photos/bunga/1407443630228183-removebg-preview.png" class="floral-dec cherish-dec-1 f-float" alt="">
-  <img src="photos/bunga/4.png" class="floral-dec cherish-dec-2 f-float-rev" alt="">
-  <div class="shell" style="position:relative;z-index:2">
+<section id="cherish">  <div class="shell" style="position:relative;z-index:2">
     <p class="eyebrow reveal">five years of loving you</p>
     <h2 class="display reveal" data-delay="1">
       What I <em>Cherish</em> About Us
@@ -1446,10 +1465,7 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 <!-- ================================================
      SECTION 6 · LOVE GARDEN  (5 hover flowers)
      ================================================ -->
-<section id="garden">
-  <img src="photos/bunga/_aesthetic__wallpaper__wallpaperforyourphone_-removebg-preview.png" class="floral-dec garden-dec-1 f-float" alt="">
-  <img src="photos/bunga/3.png" class="floral-dec garden-dec-2 f-float-rev" alt="">
-  <div class="shell" style="position:relative;z-index:2">
+<section id="garden">  <div class="shell" style="position:relative;z-index:2">
     <p class="eyebrow reveal">our love garden</p>
     <h2 class="display reveal" data-delay="1">
       Five Blooms,<br>
@@ -1496,10 +1512,7 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 <!-- ================================================
      SECTION 7 · PHOTO GRID
      ================================================ -->
-<section id="memories">
-  <img src="photos/bunga/Decorate_laptops__Hydro_Flasks__cars_and_more_with_-removebg-preview.png" class="floral-dec mem-dec-1 f-float" alt="">
-  <img src="photos/bunga/1.png" class="floral-dec mem-dec-2 f-float-rev" alt="">
-  <div class="shell" style="position:relative;z-index:2">
+<section id="memories">  <div class="shell" style="position:relative;z-index:2">
     <div class="dashed reveal"><span>captured in time</span></div>
     <div class="dashed reveal" data-delay="1"><span>cherished forever</span></div>
     <div class="dashed reveal" data-delay="2"><span>written in us</span></div>
@@ -1731,9 +1744,7 @@ h1,h2,h3{font-weight:400;line-height:1.1}
 <!-- ================================================
      SECTION 8 · CLOSING
      ================================================ -->
-<section id="closing">
-  <img src="photos/bunga/2885187255888874-removebg-preview.png" class="floral-dec closing-dec-1 f-float" alt="">
-  <div class="shell closing">
+<section id="closing">  <div class="shell closing">
     <div class="row-emoji reveal" style="font-size:24px;letter-spacing:.5em;margin-bottom:18px">
       🌸 🌹 🌷 🌼 🌻
     </div>
@@ -2230,6 +2241,43 @@ function revealScan(){
   document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
 }
 revealScan();
+
+/* ===================================================
+   FLOWER LAYER — show/hide based on which section is visible
+   =================================================== */
+(function flowerLayer(){
+  const flowers = document.querySelectorAll('#flower-layer .floral-dec[data-section]');
+  if(!flowers.length) return;
+
+  // Start all hidden, then show based on current scroll
+  flowers.forEach(img => {
+    img.style.transition = 'opacity 0.8s ease';
+    img.style.opacity = '0';
+  });
+
+  const sectionMap = {};
+  document.querySelectorAll('section').forEach(s => { sectionMap[s.id] = s; });
+
+  function update(){
+    const mid = window.innerHeight / 2;
+    const scrollY = window.scrollY;
+    let activeSection = null;
+    for(const id in sectionMap){
+      const rect = sectionMap[id].getBoundingClientRect();
+      if(rect.top <= mid && rect.bottom >= mid){
+        activeSection = id;
+        break;
+      }
+    }
+    flowers.forEach(img => {
+      img.style.opacity = (img.dataset.section === activeSection) ? '' : '0';
+    });
+  }
+
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
+
 
 /* ===================================================
    MUSIC — widget toggle + audio event sync
