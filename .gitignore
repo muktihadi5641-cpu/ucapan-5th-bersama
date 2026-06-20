@@ -1,5 +1,4 @@
-# mp3 files stay local-only (not part of public deploy; audio served via YouTube embed)
-audio/*.mp3
+# (audio MP3 files are now served directly — no longer excluded)
 
 # Vercel local link state
 .vercel/
