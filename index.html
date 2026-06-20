@@ -3,7 +3,12 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=1200" />
+  <meta id="viewportMeta" name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <script>
+    if (screen.width < 768) {
+      document.getElementById('viewportMeta').setAttribute('content', 'width=1024');
+    }
+  </script>
   <title>Sayangkuu</title>
   <meta name="description" content="Sayangkuu" />
 
