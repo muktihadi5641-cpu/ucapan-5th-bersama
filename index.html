@@ -3,10 +3,11 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta id="viewportMeta" name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <script>
-    if (screen.width < 768) {
-      document.getElementById('viewportMeta').setAttribute('content', 'width=1024');
+    if (screen.width < 768 || window.innerWidth < 768) {
+      document.write('<meta name="viewport" content="width=1024" />');
+    } else {
+      document.write('<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />');
     }
   </script>
   <title>Sayangkuu</title>
@@ -2251,7 +2252,7 @@
       border-radius: 12px;
       background-size: cover;
       background-position: center;
-      opacity: 0.08;
+      opacity: 0.15;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
       animation: floatUp linear infinite;
       filter: grayscale(20%) contrast(110%);
